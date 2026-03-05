@@ -1,0 +1,24 @@
+{
+  "name": "Dream Journal",
+  "short_name": "Dream Journal",
+  "description": "A personal dream journal app",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFD9F1",
+  "theme_color": "#4C63AE",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

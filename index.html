@@ -4,8 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dream Journal</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4C63AE">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Dream Journal">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js');
+    });
+  }
+</script>
 <style>
   :root {
     /* ── Backgrounds & surfaces ── */
