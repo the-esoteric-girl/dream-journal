@@ -24,7 +24,7 @@
     --size-pill-text: #1A1A1A;
 
     /* ── Overlays, shadows & glows ── */
-    --overlay: rgba(0,0,0,0.25);
+    --overlay: rgba(0,0,0,0.4);
     --shadow-btn: 3px 3px 0px #3A4F8A;
     --shadow-modal: 4px 4px 0px rgba(0,0,0,0.15);
     --shadow-input: 2px 2px 0px rgba(0,0,0,0.10);
@@ -48,6 +48,7 @@
     --dur-fast: 0.15s; --dur-base: 0.2s; --dur-slow: 0.3s;
     --dur-in: 0.35s; --dur-enter: 0.4s;
     --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+    --ease-bounce: cubic-bezier(0.34,1.56,0.64,1);
     --ease-out: cubic-bezier(0.4,0,0.2,1);
     --ease-std: ease;
 
@@ -139,9 +140,9 @@
     display: flex; align-items: center; justify-content: center;
     transition: box-shadow var(--dur-slow) var(--ease-std);
   }
-  .nav-btn.active { background: var(--accent-light); }
+  .nav-btn.active { background: var(--accent); }
   .nav-btn iconify-icon { font-size: 22px; color: var(--icon-inactive); }
-  .nav-btn.active iconify-icon { color: var(--accent); }
+  .nav-btn.active iconify-icon { color: var(--white); }
 
   /* ── HOME ── */
   .home-pad { padding: 52px 20px 20px; }
@@ -232,13 +233,9 @@
   .settings-name-disp { text-align: center; font-size: var(--fs-screen-title); font-weight: 700; color: var(--text-1); margin-bottom: var(--sp-3xl); transition: color var(--dur-slow) var(--ease-std); }
   .settings-label { font-size: var(--fs-label); color: var(--text-2); margin-bottom: 10px; transition: color var(--dur-slow) var(--ease-std); }
   .settings-input { width: 100%; background: var(--surface); border: none; border-radius: var(--r-full); padding: 14px var(--sp-xl); font-family: 'Pixelify Sans', sans-serif; font-size: 14px; color: var(--text-1); outline: none; margin-bottom: var(--sp-2xl); box-shadow: var(--shadow-input); transition: background-color var(--dur-slow) var(--ease-std), color var(--dur-slow) var(--ease-std); }
-  .save-btn {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    background: var(--accent); color: var(--white); border: none; border-radius: var(--r-pill);
-    padding: var(--sp-md) var(--sp-2xl); font-family: 'Pixelify Sans', sans-serif; font-size: var(--fs-btn);
-    cursor: pointer; margin: var(--sp-4xl) auto 0;
-    box-shadow: var(--shadow-btn);
-  }
+  /* ── AUTOSAVE INDICATOR ── */
+  #settings-saved { font-size: var(--font-size-xs); color: var(--text-2); text-align: center; opacity: 0; height: 16px; transition: opacity var(--dur-base) var(--ease-std); }
+  #settings-saved.visible { opacity: 1; }
 
   /* ── FONT SIZE PILLS ── */
   .size-pill-row { display: flex; gap: var(--sp-sm); margin-bottom: var(--sp-2xl); }
@@ -246,11 +243,12 @@
     flex: 1; border: none; border-radius: var(--r-pill); padding: var(--sp-md) var(--sp-sm);
     font-family: 'Pixelify Sans', sans-serif; font-size: var(--fs-btn); cursor: pointer;
     background: var(--accent-light); color: var(--size-pill-text);
+    box-shadow: 3px 3px 0px #A898D8;
     transition: background-color var(--dur-fast) var(--ease-std), color var(--dur-fast) var(--ease-std), filter var(--dur-fast) var(--ease-std), transform var(--dur-fast) var(--ease-std);
   }
   .size-btn:hover:not(.selected) { filter: brightness(0.92); }
   .size-btn:active { transform: scale(0.96); }
-  .size-btn.selected { background: var(--accent); color: var(--white); }
+  .size-btn.selected { background: var(--accent); color: var(--white); box-shadow: 3px 3px 0px #3A4F8A; }
 
   /* ── DARK MODE TOGGLE ── */
   .toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--sp-2xl); }
@@ -308,8 +306,8 @@
   #delete-modal.closing { display: flex; animation: overlayOut var(--dur-fast) var(--ease-std) forwards; }
   #delete-modal.open    .dialog-card { animation: dialogPop var(--dur-slow) var(--ease-spring) forwards; }
   #delete-modal.closing .dialog-card { animation: dialogOut var(--dur-fast) var(--ease-std)   forwards; }
-  @keyframes overlayIn  { from { background:rgba(0,0,0,0); }    to { background:rgba(0,0,0,0.25); } }
-  @keyframes overlayOut { from { background:rgba(0,0,0,0.25); } to { background:rgba(0,0,0,0); } }
+  @keyframes overlayIn  { from { background:rgba(0,0,0,0); }   to { background:rgba(0,0,0,0.4); } }
+  @keyframes overlayOut { from { background:rgba(0,0,0,0.4); } to { background:rgba(0,0,0,0); } }
   @keyframes dialogPop  { from { opacity:0; transform:scale(0.8); } to { opacity:1; transform:scale(1); } }
   @keyframes dialogOut  { from { opacity:1; transform:scale(1);   } to { opacity:0; transform:scale(0.9); } }
   .dialog-card {
@@ -325,27 +323,22 @@
   .delete-modal-btn:hover  { filter: brightness(0.92); }
   .delete-modal-btn:active { transform: scale(0.96); }
   .delete-modal-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .keep-btn    { background: var(--accent-light); color: var(--size-pill-text); }
-  .confirm-btn { background: var(--danger); color: var(--white); }
+  .keep-btn    { background: var(--accent-light); color: var(--size-pill-text); box-shadow: 3px 3px 0px #A898D8; }
+  .confirm-btn { background: var(--danger); color: var(--white); box-shadow: 3px 3px 0px #C45555; }
 
   /* ── CARD STAGGER ── */
   @keyframes cardIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
   .card-stagger { animation: cardIn var(--dur-slow) var(--ease-spring) both; }
+  .card-stagger-cal { animation: cardIn 400ms var(--ease-bounce) both; }
 
   /* ── CARDS: hover / press ── */
-  .card { transition: transform var(--dur-base) var(--ease-spring), background-color var(--dur-slow) var(--ease-std); }
-  .card:hover  { transform: translateY(-2px); }
-  .card:active { transform: scale(0.98) !important; }
-
-  /* ── SAVE CHANGES BUTTON ── */
-  .save-btn { transition: filter var(--dur-fast) var(--ease-std), transform var(--dur-fast) var(--ease-std), opacity var(--dur-base) var(--ease-std); }
-  .save-btn:not(:disabled):hover  { filter: brightness(0.92); }
-  .save-btn:not(:disabled):active { transform: scale(0.96); }
-  .save-btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+  .card { transition: transform 200ms var(--ease-bounce), box-shadow 200ms var(--ease-bounce), background-color var(--dur-slow) var(--ease-std); }
+  .card:hover  { transform: translateY(-4px); box-shadow: 5px 5px 0px var(--card-shadow-color); }
+  .card:active { transform: scale(0.98); box-shadow: 3px 3px 0px var(--card-shadow-color); transition: transform 100ms var(--ease-bounce), box-shadow 100ms var(--ease-bounce); }
 
   /* ── NAV BAR ICONS ── */
   .nav-btn iconify-icon { opacity: 0.5; transition: opacity 0.1s var(--ease-std), transform 0.1s var(--ease-std); }
-  .nav-btn.active iconify-icon { color: var(--accent); opacity: 1; }
+  .nav-btn.active iconify-icon { color: var(--white); opacity: 1; }
   .nav-btn:hover:not(.active) iconify-icon { opacity: 0.8; }
   .nav-btn:active:not(.active) iconify-icon { transform: scale(0.95); }
 
@@ -422,8 +415,8 @@
   }
   .photo-modal-btn:hover  { filter: brightness(0.92); }
   .photo-modal-btn:active { transform: scale(0.96); }
-  .photo-modal-btn-primary   { background: var(--accent); color: var(--white); }
-  .photo-modal-btn-secondary { background: var(--accent-light); color: var(--text-1); }
+  .photo-modal-btn-primary   { background: var(--accent); color: var(--white); box-shadow: 3px 3px 0px #3A4F8A; }
+  .photo-modal-btn-secondary { background: var(--accent-light); color: var(--text-1); box-shadow: 3px 3px 0px #A898D8; }
   .photo-modal-back {
     background: none; border: none; cursor: pointer; color: var(--text-2); padding: 0;
     display: flex; align-items: center; gap: 4px; margin-bottom: var(--sp-md);
@@ -454,7 +447,7 @@
   .avatar-option:hover:not(.selected) { transform: scale(1.06); }
   .avatar-option:active { transform: scale(0.93) !important; }
   .avatar-option.selected { border-color: var(--accent-light); }
-  .avatar-bg-row { display: flex; gap: var(--sp-sm); flex-wrap: wrap; }
+  .avatar-bg-row { display: flex; gap: var(--sp-sm); flex-wrap: wrap; justify-content: center; }
   .avatar-bg-option {
     width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
     border: 2.5px solid transparent; flex-shrink: 0;
@@ -483,12 +476,13 @@
   #settings-swatches { justify-content: center; }
 
   /* ── WEATHER ICON ── */
-  #home-weather-icon { color: var(--text-1); }
+  #home-weather-icon { color: var(--text-2); }
 
   /* ── PROMPT CARD ── */
   .prompt-card {
     background: var(--modal-bg); border: 1.5px solid var(--accent-light); border-radius: var(--r-md);
     padding: 14px var(--sp-lg); margin-bottom: var(--sp-lg); cursor: pointer;
+    box-shadow: var(--shadow-modal);
     animation: cardIn var(--dur-slow) var(--ease-spring) both;
     transition: background-color var(--dur-slow) var(--ease-std), transform var(--dur-fast) var(--ease-std), box-shadow var(--dur-fast) var(--ease-std);
   }
@@ -546,16 +540,16 @@
           <iconify-icon icon="pixelarticons:chevron-left"></iconify-icon>
         </button>
         <button id="delete-btn" onclick="showDeleteDialog()" style="background:none;border:none;cursor:pointer;display:none;padding:0;">
-          <iconify-icon icon="pixelarticons:trash" style="font-size:22px;color:#5A5A5A;"></iconify-icon>
+          <iconify-icon icon="pixelarticons:trash" style="font-size:22px;color:var(--text-2);"></iconify-icon>
         </button>
       </div>
       <div class="entry-meta">
         <div class="entry-meta-left">
-          <iconify-icon id="entry-weather" icon="ph:sun" style="font-size:16px;color:#5A5A5A;"></iconify-icon>
-          <span id="entry-temp" style="color:#5A5A5A;font-size:12px;"></span>
-          <span id="entry-date" style="color:#5A5A5A;">Date</span>
+          <iconify-icon id="entry-weather" icon="ph:sun" style="font-size:16px;color:var(--text-2);"></iconify-icon>
+          <span id="entry-temp" style="color:var(--text-2);font-size:12px;"></span>
+          <span id="entry-date" style="color:var(--text-2);">Date</span>
         </div>
-        <span id="entry-time" style="color:#5A5A5A;">00:00 PM</span>
+        <span id="entry-time" style="color:var(--text-2);">00:00 PM</span>
       </div>
     </div>
     <div class="entry-scroll">
@@ -577,12 +571,9 @@
   <!-- ════ CALENDAR ════ -->
   <div id="screen-calendar" class="screen hidden">
     <div class="screen-head">
-      <button class="back-btn" onclick="showScreen('home')">
-        <iconify-icon icon="pixelarticons:chevron-left"></iconify-icon>
-      </button>
       <div class="screen-title">Calendar</div>
       <div class="search-bar">
-        <iconify-icon icon="pixelarticons:search" style="font-size:18px;color:#5A5A5A;flex-shrink:0;"></iconify-icon>
+        <iconify-icon icon="pixelarticons:search" style="font-size:18px;color:var(--text-2);flex-shrink:0;"></iconify-icon>
         <input type="text" id="search-input" placeholder="Search" oninput="handleSearch(this.value)">
       </div>
     </div>
@@ -607,13 +598,11 @@
   <!-- ════ SETTINGS ════ -->
   <div id="screen-settings" class="screen hidden">
     <div class="scroll" style="padding:48px 20px 90px;">
-      <button class="back-btn" onclick="showScreen('home')">
-        <iconify-icon icon="pixelarticons:chevron-left"></iconify-icon>
-      </button>
       <div class="screen-title">Settings</div>
+      <div id="settings-saved">saved ✓</div>
       <div class="avatar-wrap" onclick="showPhotoModal()">
         <div class="avatar" id="avatar-display">
-          <iconify-icon icon="pixelarticons:user" style="font-size:32px;color:#888;"></iconify-icon>
+          <iconify-icon icon="pixelarticons:user" style="font-size:32px;color:var(--icon-inactive);"></iconify-icon>
         </div>
         <div class="camera-badge">
           <iconify-icon icon="pixelarticons:camera" style="font-size:12px;color:white;"></iconify-icon>
@@ -644,10 +633,6 @@
           <div class="toggle-thumb"></div>
         </button>
       </div>
-      <button class="save-btn" id="save-btn" onclick="saveSettings()">
-        <iconify-icon icon="pixelarticons:save" style="font-size:18px;"></iconify-icon>
-      save changes
-      </button>
     </div>
   </div>
 
@@ -711,7 +696,7 @@
   <div id="delete-modal" onclick="handleDeleteModalOverlay(event)">
     <div class="dialog-card" onclick="event.stopPropagation()">
       <div style="display:flex;justify-content:flex-end;margin-bottom:4px;">
-        <button onclick="hideDeleteDialog()" style="background:none;border:none;cursor:pointer;padding:0;color:#5A5A5A;display:flex;align-items:center;">
+        <button onclick="hideDeleteDialog()" style="background:none;border:none;cursor:pointer;padding:0;color:var(--text-2);display:flex;align-items:center;">
           <iconify-icon icon="pixelarticons:x" style="font-size:20px;"></iconify-icon>
         </button>
       </div>
@@ -722,6 +707,7 @@
       </div>
     </div>
   </div>
+
 
 </div>
 <script>
@@ -795,9 +781,10 @@ function applyDark() {
 }
 function toggleDark() {
   darkMode = !darkMode;
-  localStorage.setItem('dj_dark', darkMode ? '1' : '0');
   applyDark();
   document.getElementById('dark-toggle').classList.toggle('on', darkMode);
+  localStorage.setItem('dj_dark', darkMode ? '1' : '0');
+  showSettingsSaved();
   // Re-render cards with new color scheme
   const homeEl = document.getElementById('home-entries');
   if (homeEl && !document.getElementById('screen-home').classList.contains('hidden')) {
@@ -816,9 +803,10 @@ function applyFontSz() {
 }
 function setFontSz(sz) {
   fontSz = sz;
-  localStorage.setItem('dj_font_sz', sz);
   applyFontSz();
+  localStorage.setItem('dj_font_sz', sz);
   document.querySelectorAll('.size-btn').forEach(b => b.classList.toggle('selected', b.dataset.size === sz));
+  showSettingsSaved();
 }
 
 // ── PROMPTS ───────────────────────────────────────────
@@ -884,7 +872,7 @@ async function fetchHistoricalWeather(date,lat,lon){
 }
 
 // ── RENDER CARDS ─────────────────────────────────────
-function renderCards(container, list, stagger=false) {
+function renderCards(container, list, stagger=false, staggerClass='card-stagger') {
   if (!list.length) {
     container.innerHTML = '<p style="color:var(--text-2);font-size:13px;padding:12px 0;">No entries found.</p>';
     return;
@@ -893,12 +881,12 @@ function renderCards(container, list, stagger=false) {
   const shadows = darkMode ? DARK_SHADOW : LIGHT_SHADOW;
   container.innerHTML = list.map((e,i) => {
     const bg  = palette[e.color] || COLORS[e.color];
-    const shd = `box-shadow:3px 3px 0px ${shadows[e.color]};`;
+    const shd = `box-shadow:3px 3px 0px ${shadows[e.color]};--card-shadow-color:${shadows[e.color]};`;
     return `
-    <div class="card${stagger?' card-stagger':''}" style="background:${bg};${shd}${stagger?`animation-delay:${i*80}ms`:''}" onclick="openEntry(${e.id})">
+    <div class="card${stagger?' '+staggerClass:''}" style="background:${bg};${shd}${stagger?`animation-delay:${i*80}ms`:''}" onclick="openEntry(${e.id})">
       <div class="card-header">
         <div class="card-header-left">
-          <iconify-icon icon="${esc(e.weather)}" style="font-size:15px;${e.weather==='ph:sun'?'color:#F0A500;':''}"></iconify-icon>
+          <iconify-icon icon="${esc(e.weather)}" style="font-size:15px;"></iconify-icon>
           ${e.tempF!=null?`<span>${e.tempF}°F</span>`:''}
           <span>${dispDate(e.date)}</span>
         </div>
@@ -970,7 +958,7 @@ async function updateHomeWeather() {
   if (todayWeather) {
     const el = document.getElementById('home-weather-icon');
     el.setAttribute('icon', todayWeather.icon);
-    el.style.color = todayWeather.icon==='ph:sun' ? '#F0A500' : '';
+    el.style.color = '';
   }
 }
 
@@ -1002,6 +990,7 @@ function hideDeleteDialog(){
 function handleDeleteModalOverlay(e){
   if(e.target===document.getElementById('delete-modal')) hideDeleteDialog();
 }
+
 function confirmDelete(){
   hideDeleteDialog();
   if(curId){ entries=entries.filter(x=>x.id!==curId); persist(); curId=null; }
@@ -1098,7 +1087,7 @@ function renderCalendar() {
       <div class="cal-day-num" style="${tod&&!sel?'font-weight:700;':''}">${d}</div>${dot}</div>`;
   }
   document.getElementById('cal-grid').innerHTML=html;
-  renderCards(document.getElementById('cal-entries'), entries.filter(e=>e.date===selDate));
+  renderCards(document.getElementById('cal-entries'), entries.filter(e=>e.date===selDate), true, 'card-stagger-cal');
 }
 
 function pickDate(ds){ selDate=ds; renderCalendar(); }
@@ -1127,39 +1116,38 @@ function handleSearch(q){
 }
 
 // ── SETTINGS ─────────────────────────────────────────
-let settingsOrig = {name:'', color:'pink'};
+let savedTimer = null;
+
+function showSettingsSaved() {
+  const el = document.getElementById('settings-saved');
+  if (!el) return;
+  el.classList.add('visible');
+  if (savedTimer) clearTimeout(savedTimer);
+  savedTimer = setTimeout(() => el.classList.remove('visible'), 1500);
+}
 
 function initSettings(){
-  settingsOrig = {name:userName, color:defColor};
   renderProfilePic();
-  const input=document.getElementById('settings-name-input');
-  const btn=document.getElementById('save-btn');
-  input.value=userName;
-  document.getElementById('settings-name-disp').textContent=userName||'Your Name';
+  const input = document.getElementById('settings-name-input');
+  input.value = userName;
+  document.getElementById('settings-name-disp').textContent = userName || 'Your Name';
   document.querySelectorAll('#settings-swatches .swatch').forEach(s=>s.classList.toggle('selected',s.dataset.color===defColor));
-  // Font size pills
   document.querySelectorAll('.size-btn').forEach(b=>b.classList.toggle('selected', b.dataset.size===fontSz));
-  // Dark mode toggle
   document.getElementById('dark-toggle').classList.toggle('on', darkMode);
-  btn.disabled=true;
-  input.oninput=()=>{ btn.disabled=!(input.value.trim()!==settingsOrig.name||defColor!==settingsOrig.color); };
+  input.oninput = () => {
+    userName = input.value.trim();
+    document.getElementById('settings-name-disp').textContent = input.value || 'Your Name';
+    persist();
+    showSettingsSaved();
+  };
 }
 
-function setDefaultColor(el,color){
-  defColor=color;
+function setDefaultColor(el, color){
+  defColor = color;
   document.querySelectorAll('#settings-swatches .swatch').forEach(s=>s.classList.remove('selected'));
   el.classList.add('selected');
-  const btn=document.getElementById('save-btn');
-  if(btn) btn.disabled=!(document.getElementById('settings-name-input').value.trim()!==settingsOrig.name||defColor!==settingsOrig.color);
-}
-
-function saveSettings(){
-  userName=document.getElementById('settings-name-input').value.trim();
-  document.getElementById('settings-name-disp').textContent=userName||'Your Name';
   persist();
-  const btn=document.getElementById('save-btn'), orig=btn.innerHTML;
-  btn.textContent='Saved!';
-  setTimeout(()=>{ btn.innerHTML=orig; btn.disabled=true; },1400);
+  showSettingsSaved();
 }
 
 // ── PROFILE PICTURE ──────────────────────────────────
@@ -1191,9 +1179,9 @@ function renderProfilePic() {
     homeBtn.innerHTML = `<span class="home-avatar-emoji">${profileAvatar.emoji}</span>`;
   } else {
     avatarEl.style.background = 'var(--neutral)';
-    avatarEl.innerHTML = `<iconify-icon icon="pixelarticons:user" style="font-size:32px;color:#888;"></iconify-icon>`;
+    avatarEl.innerHTML = `<iconify-icon icon="pixelarticons:user" style="font-size:32px;color:var(--icon-inactive);"></iconify-icon>`;
     homeBtn.style.background = 'var(--neutral)';
-    homeBtn.innerHTML = `<iconify-icon icon="pixelarticons:user" style="font-size:16px;color:#888;"></iconify-icon>`;
+    homeBtn.innerHTML = `<iconify-icon icon="pixelarticons:user" style="font-size:16px;color:var(--icon-inactive);"></iconify-icon>`;
   }
 }
 
