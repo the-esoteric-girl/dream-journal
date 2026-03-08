@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <title>Dream Journal</title>
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#4C63AE" />
@@ -204,7 +207,7 @@
       #app {
         width: 100%;
         max-width: 390px;
-        height: 100%;
+        height: 100dvh;
         position: relative;
         background: var(--bg);
         overflow: hidden;
@@ -217,7 +220,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+        height: 100dvh;
         display: flex;
         flex-direction: column;
         transition: background-color var(--dur-slow) var(--ease-std);
@@ -420,6 +423,7 @@
       }
       .entry-scroll {
         flex: 1;
+        min-height: 0;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         padding: 4px 20px 0;
@@ -468,10 +472,8 @@
         font-size: var(--fs-entry-body);
         color: var(--text-2);
         line-height: 1.7;
-        min-height: 100%;
-        height: auto;
+        min-height: 0;
         flex: 1;
-        overflow-y: auto;
         transition: color var(--dur-slow) var(--ease-std);
       }
       .swatches {
@@ -1499,7 +1501,10 @@
     <div id="app">
       <!-- ════ HOME ════ -->
       <div id="screen-home" class="screen">
-        <div class="scroll" style="padding-bottom: calc(80px + env(safe-area-inset-bottom))">
+        <div
+          class="scroll"
+          style="padding-bottom: calc(80px + env(safe-area-inset-bottom))"
+        >
           <div class="home-pad">
             <div class="header" style="position: relative">
               <button
@@ -1648,7 +1653,10 @@
             />
           </div>
         </div>
-        <div class="scroll" style="padding: 0 20px calc(80px + env(safe-area-inset-bottom))">
+        <div
+          class="scroll"
+          style="padding: 0 20px calc(80px + env(safe-area-inset-bottom))"
+        >
           <div id="cal-view">
             <div class="cal-nav">
               <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
@@ -1668,7 +1676,13 @@
 
       <!-- ════ SETTINGS ════ -->
       <div id="screen-settings" class="screen hidden">
-        <div class="scroll" style="padding: calc(48px + env(safe-area-inset-top)) 20px calc(80px + env(safe-area-inset-bottom))">
+        <div
+          class="scroll"
+          style="
+            padding: calc(48px + env(safe-area-inset-top)) 20px
+              calc(80px + env(safe-area-inset-bottom));
+          "
+        >
           <div class="screen-title">Settings</div>
           <div id="settings-saved">saved ✓</div>
           <div class="avatar-wrap" onclick="showPhotoModal()">
