@@ -1,907 +1,2270 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dream Journal</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#4C63AE">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Dream Journal">
-<link rel="apple-touch-icon" href="assets/icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js');
-    });
-  }
-</script>
-<style>
-  :root {
-    /* ── Backgrounds & surfaces ── */
-    --bg: #FDFEFF; --nav-bg: #FDFEFF; --modal-bg: #FDFEFF; --screen-bg: white;
-    --text-1: #1A1A1A; --text-2: #5A5A5A; --surface: #F2F2F2;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Dream Journal</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#4C63AE" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Dream Journal" />
+    <link rel="apple-touch-icon" href="assets/icon-192.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/service-worker.js");
+        });
+      }
+    </script>
+    <style>
+      :root {
+        /* ── Backgrounds & surfaces ── */
+        --bg: #fdfeff;
+        --nav-bg: #fdfeff;
+        --modal-bg: #fdfeff;
+        --screen-bg: white;
+        --text-1: #1a1a1a;
+        --text-2: #5a5a5a;
+        --surface: #f2f2f2;
 
-    /* ── Accent & semantic colors ── */
-    --accent: #4C63AE;
-    --accent-light: #D6C3FF;
-    --accent-lighter: #E4C4FF;
-    --danger: #E57373;
-    --neutral: #D9D9D9;
-    --muted: #CCC;
-    --white: #fff;
-    --icon-inactive: #5A5A5A;
-    --size-pill-text: #1A1A1A;
+        /* ── Accent & semantic colors ── */
+        --accent: #4c63ae;
+        --accent-light: #d6c3ff;
+        --accent-lighter: #e4c4ff;
+        --danger: #e57373;
+        --neutral: #d9d9d9;
+        --muted: #ccc;
+        --white: #fff;
+        --icon-inactive: #5a5a5a;
+        --size-pill-text: #1a1a1a;
 
-    /* ── Overlays, shadows & glows ── */
-    --overlay: rgba(0,0,0,0.4);
-    --shadow-btn: 3px 3px 0px #3A4F8A;
-    --shadow-modal: 4px 4px 0px rgba(0,0,0,0.15);
-    --shadow-input: 2px 2px 0px rgba(0,0,0,0.10);
-    --shadow-avatar: 2px 2px 0px rgba(0,0,0,0.15);
-    --shadow-journal: -2px 2px 0px rgba(0,0,0,0.15);
-    --shadow-journal-lines: 0 8px 0 var(--journal-line-1), 0 16px 0 var(--journal-line-2), 0 24px 0 var(--journal-line-3);
-    --nav-border-color: rgba(0,0,0,0.08);
-    --journal-line-1: rgba(76,99,174,0.18);
-    --journal-line-2: rgba(76,99,174,0.13);
-    --journal-line-3: rgba(76,99,174,0.09);
+        /* ── Overlays, shadows & glows ── */
+        --overlay: rgba(0, 0, 0, 0.4);
+        --shadow-btn: 3px 3px 0px #3a4f8a;
+        --shadow-modal: 4px 4px 0px rgba(0, 0, 0, 0.15);
+        --shadow-input: 2px 2px 0px rgba(0, 0, 0, 0.1);
+        --shadow-avatar: 2px 2px 0px rgba(0, 0, 0, 0.15);
+        --shadow-journal: -2px 2px 0px rgba(0, 0, 0, 0.15);
+        --shadow-journal-lines:
+          0 8px 0 var(--journal-line-1), 0 16px 0 var(--journal-line-2),
+          0 24px 0 var(--journal-line-3);
+        --nav-border-color: rgba(0, 0, 0, 0.08);
+        --journal-line-1: rgba(76, 99, 174, 0.18);
+        --journal-line-2: rgba(76, 99, 174, 0.13);
+        --journal-line-3: rgba(76, 99, 174, 0.09);
 
-    /* ── Spacing ── */
-    --sp-xs: 4px; --sp-sm: 8px; --sp-md: 12px; --sp-lg: 16px;
-    --sp-xl: 20px; --sp-2xl: 24px; --sp-3xl: 28px; --sp-4xl: 32px;
+        /* ── Spacing ── */
+        --sp-xs: 4px;
+        --sp-sm: 8px;
+        --sp-md: 12px;
+        --sp-lg: 16px;
+        --sp-xl: 20px;
+        --sp-2xl: 24px;
+        --sp-3xl: 28px;
+        --sp-4xl: 32px;
 
-    /* ── Border radius ── */
-    --r-sm: 8px; --r-md: 20px; --r-lg: 24px; --r-pill: 50px; --r-full: 999px;
+        /* ── Border radius ── */
+        --r-sm: 8px;
+        --r-md: 20px;
+        --r-lg: 24px;
+        --r-pill: 50px;
+        --r-full: 999px;
 
-    /* ── Transitions & easing ── */
-    --duration-fast: 150ms;
-    --dur-fast: 0.15s; --dur-base: 0.2s; --dur-slow: 0.3s;
-    --dur-in: 0.35s; --dur-enter: 0.4s;
-    --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
-    --ease-bounce: cubic-bezier(0.34,1.56,0.64,1);
-    --ease-out: cubic-bezier(0.4,0,0.2,1);
-    --ease-std: ease;
+        /* ── Transitions & easing ── */
+        --duration-fast: 150ms;
+        --dur-fast: 0.15s;
+        --dur-base: 0.2s;
+        --dur-slow: 0.3s;
+        --dur-in: 0.35s;
+        --dur-enter: 0.4s;
+        --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+        --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+        --ease-std: ease;
 
-    /* ── Font scale (medium defaults) ── */
-    --font-size-xs: 12px; --font-size-sm: 14px; --font-size-md: 16px;
-    --font-size-lg: 18px; --font-size-xl: 22px; --font-size-2xl: 26px;
+        /* ── Font scale (medium defaults) ── */
+        --font-size-xs: 12px;
+        --font-size-sm: 14px;
+        --font-size-md: 16px;
+        --font-size-lg: 18px;
+        --font-size-xl: 22px;
+        --font-size-2xl: 26px;
 
-    /* ── Element font sizes (medium defaults) ── */
-    --fs-heading: 22px; --fs-screen-title: 20px;
-    --fs-card-title: 16px; --fs-card-preview: 14px; --fs-card-meta: 12px;
-    --fs-entry-title: 22px; --fs-entry-body: 16px;
-    --fs-btn: 14px; --fs-label: 12px; --fs-prompt: 15px;
-  }
-  body.dark {
-    --bg: #1A1220; --nav-bg: #241830; --modal-bg: #241830; --screen-bg: #1A1220;
-    --text-1: #F0E6FF; --text-2: #9B8FB0; --surface: #2D2040;
-    --accent-light: #8B6FD4;
-    --nav-border-color: rgba(255,255,255,0.06);
-  }
-  [data-theme="dark"] {
-    --bg: #1A1220; --nav-bg: #241830; --modal-bg: #241830; --screen-bg: #1A1220;
-    --text-1: #F0E6FF; --text-2: #9B8FB0; --surface: #2D2040;
-    --accent-light: #8B6FD4;
-    --nav-border-color: rgba(255,255,255,0.06);
-  }
-  body.font-small {
-    --font-size-xs: 12px; --font-size-sm: 14px; --font-size-md: 14px;
-    --font-size-lg: 16px; --font-size-xl: 18px; --font-size-2xl: 22px;
-    --fs-heading: 18px; --fs-screen-title: 17px;
-    --fs-card-title: 16px; --fs-card-preview: 14px; --fs-card-meta: 12px;
-    --fs-entry-title: 18px; --fs-entry-body: 14px;
-    --fs-btn: 14px; --fs-label: 12px; --fs-prompt: 14px;
-  }
-  body.font-medium {
-    --font-size-xs: 12px; --font-size-sm: 14px; --font-size-md: 16px;
-    --font-size-lg: 18px; --font-size-xl: 22px; --font-size-2xl: 26px;
-    --fs-heading: 22px; --fs-screen-title: 20px;
-    --fs-card-title: 16px; --fs-card-preview: 14px; --fs-card-meta: 12px;
-    --fs-entry-title: 22px; --fs-entry-body: 16px;
-    --fs-btn: 14px; --fs-label: 12px; --fs-prompt: 15px;
-  }
-  body.font-large {
-    --font-size-xs: 14px; --font-size-sm: 15px; --font-size-md: 17px;
-    --font-size-lg: 20px; --font-size-xl: 26px; --font-size-2xl: 30px;
-    --fs-heading: 26px; --fs-screen-title: 22px;
-    --fs-card-title: 18px; --fs-card-preview: 16px; --fs-card-meta: 14px;
-    --fs-entry-title: 26px; --fs-entry-body: 18px;
-    --fs-btn: 15px; --fs-label: 14px; --fs-prompt: 17px;
-  }
+        /* ── Element font sizes (medium defaults) ── */
+        --fs-heading: 22px;
+        --fs-screen-title: 20px;
+        --fs-card-title: 16px;
+        --fs-card-preview: 14px;
+        --fs-card-meta: 12px;
+        --fs-entry-title: 22px;
+        --fs-entry-body: 16px;
+        --fs-btn: 14px;
+        --fs-label: 12px;
+        --fs-prompt: 15px;
+      }
+      body.dark {
+        --bg: #1a1220;
+        --nav-bg: #241830;
+        --modal-bg: #241830;
+        --screen-bg: #1a1220;
+        --text-1: #f0e6ff;
+        --text-2: #9b8fb0;
+        --surface: #2d2040;
+        --accent-light: #8b6fd4;
+        --nav-border-color: rgba(255, 255, 255, 0.06);
+      }
+      [data-theme="dark"] {
+        --bg: #1a1220;
+        --nav-bg: #241830;
+        --modal-bg: #241830;
+        --screen-bg: #1a1220;
+        --text-1: #f0e6ff;
+        --text-2: #9b8fb0;
+        --surface: #2d2040;
+        --accent-light: #8b6fd4;
+        --nav-border-color: rgba(255, 255, 255, 0.06);
+      }
+      body.font-small {
+        --font-size-xs: 12px;
+        --font-size-sm: 14px;
+        --font-size-md: 14px;
+        --font-size-lg: 16px;
+        --font-size-xl: 18px;
+        --font-size-2xl: 22px;
+        --fs-heading: 18px;
+        --fs-screen-title: 17px;
+        --fs-card-title: 16px;
+        --fs-card-preview: 14px;
+        --fs-card-meta: 12px;
+        --fs-entry-title: 18px;
+        --fs-entry-body: 14px;
+        --fs-btn: 14px;
+        --fs-label: 12px;
+        --fs-prompt: 14px;
+      }
+      body.font-medium {
+        --font-size-xs: 12px;
+        --font-size-sm: 14px;
+        --font-size-md: 16px;
+        --font-size-lg: 18px;
+        --font-size-xl: 22px;
+        --font-size-2xl: 26px;
+        --fs-heading: 22px;
+        --fs-screen-title: 20px;
+        --fs-card-title: 16px;
+        --fs-card-preview: 14px;
+        --fs-card-meta: 12px;
+        --fs-entry-title: 22px;
+        --fs-entry-body: 16px;
+        --fs-btn: 14px;
+        --fs-label: 12px;
+        --fs-prompt: 15px;
+      }
+      body.font-large {
+        --font-size-xs: 14px;
+        --font-size-sm: 15px;
+        --font-size-md: 17px;
+        --font-size-lg: 20px;
+        --font-size-xl: 26px;
+        --font-size-2xl: 30px;
+        --fs-heading: 26px;
+        --fs-screen-title: 22px;
+        --fs-card-title: 18px;
+        --fs-card-preview: 16px;
+        --fs-card-meta: 14px;
+        --fs-entry-title: 26px;
+        --fs-entry-body: 18px;
+        --fs-btn: 15px;
+        --fs-label: 14px;
+        --fs-prompt: 17px;
+      }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-  body {
-    font-family: 'Pixelify Sans', sans-serif;
-    background: var(--bg);
-    display: flex; justify-content: center;
-    height: 100vh; overflow: hidden;
-    transition: background-color var(--dur-slow) var(--ease-std);
-  }
+      body {
+        font-family: "Pixelify Sans", sans-serif;
+        background: var(--bg);
+        display: flex;
+        justify-content: center;
+        height: 100dvh;
+        overflow: hidden;
+        transition: background-color var(--dur-slow) var(--ease-std);
+      }
 
-  #app {
-    width: 100%; max-width: 390px;
-    height: 100%; position: relative;
-    background: var(--bg); overflow: hidden;
-    transition: background-color var(--dur-slow) var(--ease-std);
-  }
+      #app {
+        width: 100%;
+        max-width: 390px;
+        height: 100%;
+        position: relative;
+        background: var(--bg);
+        overflow: hidden;
+        transition: background-color var(--dur-slow) var(--ease-std);
+      }
 
-  /* ── SCREENS ── */
-  .screen {
-    position: absolute; top: 0; left: 0;
-    width: 100%; height: 100%;
-    display: flex; flex-direction: column;
-    transition: background-color var(--dur-slow) var(--ease-std);
-  }
-  .screen.hidden { display: none; }
-  #screen-entry { transition: background-color var(--dur-slow) var(--ease-std); }
+      /* ── SCREENS ── */
+      .screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        transition: background-color var(--dur-slow) var(--ease-std);
+      }
+      .screen.hidden {
+        display: none;
+      }
+      #screen-entry {
+        height: 100dvh;
+        transition: background-color var(--dur-slow) var(--ease-std);
+      }
 
-  .scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+      .scroll {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
 
-  /* ── BOTTOM NAV ── */
-  .nav {
-    flex-shrink: 0;
-    display: flex; justify-content: space-around; align-items: center;
-    padding: 12px 32px 28px;
-  }
-  .nav-btn {
-    width: 50px; height: 50px; border-radius: 50%; border: none;
-    background: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: box-shadow var(--dur-slow) var(--ease-std);
-  }
-  .nav-btn.active { background: var(--accent); }
-  .nav-btn iconify-icon { font-size: 22px; color: var(--icon-inactive); }
-  .nav-btn.active iconify-icon { color: var(--white); }
+      /* ── BOTTOM NAV ── */
+      .nav {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 12px 32px calc(28px + env(safe-area-inset-bottom));
+      }
+      .nav-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        background: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: box-shadow var(--dur-slow) var(--ease-std);
+      }
+      .nav-btn.active {
+        background: var(--accent);
+      }
+      .nav-btn iconify-icon {
+        font-size: 22px;
+        color: var(--icon-inactive);
+      }
+      .nav-btn.active iconify-icon {
+        color: var(--white);
+      }
 
-  /* ── HOME ── */
-  .home-pad { padding: 52px 20px 20px; }
-  .header { text-align: center; margin-bottom: var(--sp-xl); }
-  .date-row { font-size: var(--fs-heading); font-weight: 700; color: var(--text-1); display: flex; align-items: center; justify-content: center; gap: 10px; transition: color var(--dur-slow) var(--ease-std); }
-  .subtitle { font-size: var(--fs-label); color: var(--text-2); margin-top: 6px; transition: color var(--dur-slow) var(--ease-std); }
+      /* ── HOME ── */
+      .home-pad {
+        padding: calc(52px + env(safe-area-inset-top)) 20px 20px;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: var(--sp-xl);
+      }
+      .date-row {
+        font-size: var(--fs-heading);
+        font-weight: 700;
+        color: var(--text-1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .subtitle {
+        font-size: var(--fs-label);
+        color: var(--text-2);
+        margin-top: 6px;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
 
-  .write-btn {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    background: var(--accent); color: var(--white); border: none; border-radius: var(--r-pill);
-    padding: var(--sp-md) var(--sp-2xl); font-family: 'Pixelify Sans', sans-serif; font-size: var(--fs-btn);
-    cursor: pointer; margin: 0 auto var(--sp-4xl);
-    box-shadow: var(--shadow-btn);
-    transition: filter var(--dur-fast) var(--ease-std), transform var(--dur-fast) var(--ease-std);
-  }
-  .write-btn:hover   { filter: brightness(0.92); }
-  .write-btn:active  { transform: scale(0.96); }
-  .write-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+      .write-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: var(--accent);
+        color: var(--white);
+        border: none;
+        border-radius: var(--r-pill);
+        padding: var(--sp-md) var(--sp-2xl);
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: var(--fs-btn);
+        cursor: pointer;
+        margin: 0 auto var(--sp-4xl);
+        box-shadow: var(--shadow-btn);
+        transition:
+          filter var(--dur-fast) var(--ease-std),
+          transform var(--dur-fast) var(--ease-std);
+      }
+      .write-btn:hover {
+        filter: brightness(0.92);
+      }
+      .write-btn:active {
+        transform: scale(0.96);
+      }
+      .write-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
 
-  .section-label { font-size: var(--fs-label); color: var(--text-1); margin-bottom: var(--sp-md); transition: color var(--dur-slow) var(--ease-std); }
+      .section-label {
+        font-size: var(--fs-label);
+        color: var(--text-1);
+        margin-bottom: var(--sp-md);
+        transition: color var(--dur-slow) var(--ease-std);
+      }
 
-  /* ── CARDS ── */
-  #home-entries, #cal-entries, #search-entries { padding: 8px 0; }
-  .card { border-radius: var(--r-md); padding: 16px 18px 20px; margin-bottom: var(--sp-md); cursor: pointer; }
-  .card-header { display: flex; justify-content: space-between; align-items: center; font-size: var(--fs-card-meta); color: var(--text-2); margin-bottom: 8px; transition: color var(--dur-slow) var(--ease-std); }
-  .card-header-left { display: flex; align-items: center; gap: 6px; }
-  .card-title { font-size: var(--fs-card-title); font-weight: 700; color: var(--text-1); margin-bottom: 8px; transition: color var(--dur-slow) var(--ease-std); }
-  .card-text { font-size: var(--fs-card-preview); color: var(--text-2); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; transition: color var(--dur-slow) var(--ease-std); }
+      /* ── CARDS ── */
+      #home-entries,
+      #cal-entries,
+      #search-entries {
+        padding: 8px 0;
+      }
+      .card {
+        border-radius: var(--r-md);
+        padding: 16px 18px 20px;
+        margin-bottom: var(--sp-md);
+        cursor: pointer;
+      }
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: var(--fs-card-meta);
+        color: var(--text-2);
+        margin-bottom: 8px;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .card-header-left {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .card-title {
+        font-size: var(--fs-card-title);
+        font-weight: 700;
+        color: var(--text-1);
+        margin-bottom: 8px;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .card-text {
+        font-size: var(--fs-card-preview);
+        color: var(--text-2);
+        line-height: 1.55;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
 
-  /* ── BACK BUTTON ── */
-  .back-btn { background: none; border: none; cursor: pointer; color: var(--text-1); display: flex; align-items: center; padding: 0; transition: transform var(--dur-fast) var(--ease-std), opacity var(--dur-fast) var(--ease-std), color var(--dur-slow) var(--ease-std); }
-  .back-btn iconify-icon { font-size: 26px; }
-  .back-btn:hover  { transform: translateX(-2px); opacity: 0.8; }
-  .back-btn:active { transform: translateX(-4px); opacity: 0.6; }
+      /* ── BACK BUTTON ── */
+      .back-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-1);
+        display: flex;
+        align-items: center;
+        padding: 0;
+        transition:
+          transform var(--dur-fast) var(--ease-std),
+          opacity var(--dur-fast) var(--ease-std),
+          color var(--dur-slow) var(--ease-std);
+      }
+      .back-btn iconify-icon {
+        font-size: 26px;
+      }
+      .back-btn:hover {
+        transform: translateX(-2px);
+        opacity: 0.8;
+      }
+      .back-btn:active {
+        transform: translateX(-4px);
+        opacity: 0.6;
+      }
 
-  /* ── ENTRY SCREEN ── */
-  .entry-top { flex-shrink: 0; padding: 48px 20px 0; }
-  .entry-meta { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; font-size: var(--fs-label); color: var(--text-2); transition: color var(--dur-slow) var(--ease-std); }
-  .entry-meta-left { display: flex; align-items: center; gap: 8px; }
-  .entry-scroll { flex: 1; overflow-y: auto; padding: 4px 20px 0; }
-  .entry-title-inp {
-    width: 100%; background: transparent; border: none; outline: none;
-    font-family: 'Pixelify Sans', sans-serif; font-size: var(--fs-entry-title); font-weight: 700;
-    color: var(--text-1); display: block; margin-bottom: 4px;
-    transition: color var(--dur-slow) var(--ease-std);
-  }
-  .inspire-btn {
-    background: none; border: none; cursor: pointer;
-    font-family: 'Pixelify Sans', sans-serif; font-size: var(--fs-label); color: var(--text-2);
-    display: flex; align-items: center; gap: 4px; padding: 0 0 12px; opacity: 0.75;
-    transition: opacity var(--dur-fast) var(--ease-std), color var(--dur-slow) var(--ease-std);
-  }
-  .inspire-btn:hover { opacity: 1; }
-  .entry-body-inp {
-    width: 100%; background: transparent; border: none; outline: none; resize: none;
-    font-family: 'Pixelify Sans', sans-serif; font-size: var(--fs-entry-body);
-    color: var(--text-2); line-height: 1.7; min-height: 280px;
-    transition: color var(--dur-slow) var(--ease-std);
-  }
-  .swatches { flex-shrink: 0; display: flex; justify-content: center; gap: 16px; padding: 16px 0 36px; }
-  .swatch { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2.5px solid transparent; }
-  .swatch.selected { border-color: var(--accent); }
+      /* ── ENTRY SCREEN ── */
+      .entry-top {
+        flex-shrink: 0;
+        padding: calc(48px + env(safe-area-inset-top)) 20px 0;
+      }
+      .entry-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 12px 0;
+        font-size: var(--fs-label);
+        color: var(--text-2);
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .entry-meta-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .entry-scroll {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px 20px 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .entry-title-inp {
+        width: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: var(--fs-entry-title);
+        font-weight: 700;
+        color: var(--text-1);
+        display: block;
+        margin-bottom: 4px;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .inspire-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: var(--fs-label);
+        color: var(--text-2);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 0 0 12px;
+        opacity: 0.75;
+        transition:
+          opacity var(--dur-fast) var(--ease-std),
+          color var(--dur-slow) var(--ease-std);
+      }
+      .inspire-btn:hover {
+        opacity: 1;
+      }
+      .entry-body-inp {
+        width: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        resize: none;
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: var(--fs-entry-body);
+        color: var(--text-2);
+        line-height: 1.7;
+        min-height: 100%;
+        height: auto;
+        flex: 1;
+        overflow-y: auto;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .swatches {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        padding: 16px 0 calc(36px + env(safe-area-inset-bottom));
+      }
+      .swatch {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2.5px solid transparent;
+      }
+      .swatch.selected {
+        border-color: var(--accent);
+      }
 
-  /* ── CALENDAR & SETTINGS shared ── */
-  #screen-calendar, #screen-settings { background: var(--screen-bg); transition: background-color var(--dur-slow) var(--ease-std); }
-  .screen-head { flex-shrink: 0; padding: 48px 20px 0; }
-  .screen-title { text-align: center; font-size: var(--fs-screen-title); font-weight: 700; color: var(--text-1); margin: 8px 0 20px; transition: color var(--dur-slow) var(--ease-std); }
+      /* ── CALENDAR & SETTINGS shared ── */
+      #screen-calendar,
+      #screen-settings {
+        background: var(--screen-bg);
+        transition: background-color var(--dur-slow) var(--ease-std);
+      }
+      .screen-head {
+        flex-shrink: 0;
+        padding: calc(48px + env(safe-area-inset-top)) 20px 0;
+      }
+      .screen-title {
+        text-align: center;
+        font-size: var(--fs-screen-title);
+        font-weight: 700;
+        color: var(--text-1);
+        margin: 8px 0 20px;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
 
-  /* ── SEARCH BAR ── */
-  .search-bar { display: flex; align-items: center; gap: 10px; background: var(--surface); border-radius: var(--r-full); padding: var(--sp-md) 18px; margin-bottom: var(--sp-lg); transition: background-color var(--dur-slow) var(--ease-std); }
-  .search-bar input { background: none; border: none; outline: none; font-family: 'Pixelify Sans', sans-serif; font-size: 14px; color: var(--text-1); width: 100%; transition: color var(--dur-slow) var(--ease-std); }
-  .search-bar input::placeholder { color: var(--text-2); }
+      /* ── SEARCH BAR ── */
+      .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--surface);
+        border-radius: var(--r-full);
+        padding: var(--sp-md) 18px;
+        margin-bottom: var(--sp-lg);
+        transition: background-color var(--dur-slow) var(--ease-std);
+      }
+      .search-bar input {
+        background: none;
+        border: none;
+        outline: none;
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: 14px;
+        color: var(--text-1);
+        width: 100%;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .search-bar input::placeholder {
+        color: var(--text-2);
+      }
 
-  /* ── CALENDAR GRID ── */
-  .cal-nav { display: flex; align-items: center; justify-content: center; gap: var(--sp-md); margin-bottom: var(--sp-md); }
-  .cal-nav-btn { background: none; border: none; cursor: pointer; color: var(--text-2); font-size: 20px; line-height: 1; padding: 4px 6px; transition: color var(--dur-slow) var(--ease-std); }
-  .cal-month { font-size: 15px; font-weight: 700; color: var(--text-1); transition: color var(--dur-slow) var(--ease-std); }
-  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: var(--sp-lg); }
-  .cal-th { font-size: var(--fs-label); color: var(--text-2); padding: 4px 0 8px; }
-  .cal-day { display: flex; flex-direction: column; align-items: center; padding: 2px 0 4px; cursor: pointer; }
-  .cal-day-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-1); transition: color var(--dur-slow) var(--ease-std); }
-  .cal-day.selected .cal-day-num { background: var(--accent-light); }
-  .cal-day.other-month .cal-day-num { color: var(--muted); }
-  .cal-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 2px; }
-  .sub-label { font-size: var(--fs-label); color: var(--text-2); margin-bottom: 10px; transition: color var(--dur-slow) var(--ease-std); }
+      /* ── CALENDAR GRID ── */
+      .cal-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--sp-md);
+        margin-bottom: var(--sp-md);
+      }
+      .cal-nav-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-2);
+        font-size: 20px;
+        line-height: 1;
+        padding: 4px 6px;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .cal-month {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text-1);
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+        margin-bottom: var(--sp-lg);
+      }
+      .cal-th {
+        font-size: var(--fs-label);
+        color: var(--text-2);
+        padding: 4px 0 8px;
+      }
+      .cal-day {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2px 0 4px;
+        cursor: pointer;
+      }
+      .cal-day-num {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: var(--text-1);
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .cal-day.selected .cal-day-num {
+        background: var(--accent-light);
+      }
+      .cal-day.other-month .cal-day-num {
+        color: var(--muted);
+      }
+      .cal-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        margin-top: 2px;
+      }
+      .sub-label {
+        font-size: var(--fs-label);
+        color: var(--text-2);
+        margin-bottom: 10px;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
 
-  /* ── SETTINGS ── */
-  .avatar { width: 72px; height: 72px; border-radius: 50%; background: var(--neutral); display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: var(--shadow-avatar); transition: filter var(--dur-fast) var(--ease-std); }
-  .settings-name-disp { text-align: center; font-size: var(--fs-screen-title); font-weight: 700; color: var(--text-1); margin-bottom: var(--sp-3xl); transition: color var(--dur-slow) var(--ease-std); }
-  .settings-label { font-size: var(--fs-label); color: var(--text-2); margin-bottom: 10px; transition: color var(--dur-slow) var(--ease-std); }
-  .settings-input { width: 100%; background: var(--surface); border: none; border-radius: var(--r-full); padding: 14px var(--sp-xl); font-family: 'Pixelify Sans', sans-serif; font-size: 14px; color: var(--text-1); outline: none; margin-bottom: var(--sp-2xl); box-shadow: var(--shadow-input); transition: background-color var(--dur-slow) var(--ease-std), color var(--dur-slow) var(--ease-std); }
-  /* ── AUTOSAVE INDICATOR ── */
-  #settings-saved { font-size: var(--font-size-xs); color: var(--text-2); text-align: center; opacity: 0; height: 16px; transition: opacity var(--dur-base) var(--ease-std); }
-  #settings-saved.visible { opacity: 1; }
+      /* ── SETTINGS ── */
+      .avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: var(--neutral);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        box-shadow: var(--shadow-avatar);
+        transition: filter var(--dur-fast) var(--ease-std);
+      }
+      .settings-name-disp {
+        text-align: center;
+        font-size: var(--fs-screen-title);
+        font-weight: 700;
+        color: var(--text-1);
+        margin-bottom: var(--sp-3xl);
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .settings-label {
+        font-size: var(--fs-label);
+        color: var(--text-2);
+        margin-bottom: 10px;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .settings-input {
+        width: 100%;
+        background: var(--surface);
+        border: none;
+        border-radius: var(--r-full);
+        padding: 14px var(--sp-xl);
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: 14px;
+        color: var(--text-1);
+        outline: none;
+        margin-bottom: var(--sp-2xl);
+        box-shadow: var(--shadow-input);
+        transition:
+          background-color var(--dur-slow) var(--ease-std),
+          color var(--dur-slow) var(--ease-std);
+      }
+      /* ── AUTOSAVE INDICATOR ── */
+      #settings-saved {
+        font-size: var(--font-size-xs);
+        color: var(--text-2);
+        text-align: center;
+        opacity: 0;
+        height: 16px;
+        transition: opacity var(--dur-base) var(--ease-std);
+      }
+      #settings-saved.visible {
+        opacity: 1;
+      }
 
-  /* ── FONT SIZE PILLS ── */
-  .size-pill-row { display: flex; gap: var(--sp-sm); margin-bottom: var(--sp-2xl); }
-  .size-btn {
-    flex: 1; border: none; border-radius: var(--r-pill); padding: var(--sp-md) var(--sp-sm);
-    font-family: 'Pixelify Sans', sans-serif; font-size: var(--fs-btn); cursor: pointer;
-    background: var(--accent-light); color: var(--size-pill-text);
-    box-shadow: 3px 3px 0px #A898D8;
-    transition: background-color var(--dur-fast) var(--ease-std), color var(--dur-fast) var(--ease-std), filter var(--dur-fast) var(--ease-std), transform var(--dur-fast) var(--ease-std);
-  }
-  .size-btn:hover:not(.selected) { filter: brightness(0.92); }
-  .size-btn:active { transform: scale(0.96); }
-  .size-btn.selected { background: var(--accent); color: var(--white); box-shadow: 3px 3px 0px #3A4F8A; }
+      /* ── FONT SIZE PILLS ── */
+      .size-pill-row {
+        display: flex;
+        gap: var(--sp-sm);
+        margin-bottom: var(--sp-2xl);
+      }
+      .size-btn {
+        flex: 1;
+        border: none;
+        border-radius: var(--r-pill);
+        padding: var(--sp-md) var(--sp-sm);
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: var(--fs-btn);
+        cursor: pointer;
+        background: var(--accent-light);
+        color: var(--size-pill-text);
+        box-shadow: 3px 3px 0px #a898d8;
+        transition:
+          background-color var(--dur-fast) var(--ease-std),
+          color var(--dur-fast) var(--ease-std),
+          filter var(--dur-fast) var(--ease-std),
+          transform var(--dur-fast) var(--ease-std);
+      }
+      .size-btn:hover:not(.selected) {
+        filter: brightness(0.92);
+      }
+      .size-btn:active {
+        transform: scale(0.96);
+      }
+      .size-btn.selected {
+        background: var(--accent);
+        color: var(--white);
+        box-shadow: 3px 3px 0px #3a4f8a;
+      }
 
-  /* ── DARK MODE TOGGLE ── */
-  .toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--sp-2xl); }
-  .toggle-label { display: flex; align-items: center; gap: 8px; font-size: var(--fs-label); color: var(--text-2); transition: color var(--dur-slow) var(--ease-std); }
-  .toggle-btn {
-    width: 44px; height: 26px; border-radius: 13px; border: none;
-    background: var(--accent-light); cursor: pointer; position: relative; padding: 0;
-    transition: background-color var(--dur-slow) var(--ease-std); flex-shrink: 0;
-  }
-  .toggle-btn.on { background: var(--accent); }
-  .toggle-thumb {
-    position: absolute; top: 3px; left: 3px;
-    width: 20px; height: 20px; border-radius: 50%; background: var(--white);
-    transition: left var(--dur-slow) var(--ease-spring);
-  }
-  .toggle-btn.on .toggle-thumb { left: 21px; }
+      /* ── DARK MODE TOGGLE ── */
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: var(--sp-2xl);
+      }
+      .toggle-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: var(--fs-label);
+        color: var(--text-2);
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .toggle-btn {
+        width: 44px;
+        height: 26px;
+        border-radius: 13px;
+        border: none;
+        background: var(--accent-light);
+        cursor: pointer;
+        position: relative;
+        padding: 0;
+        transition: background-color var(--dur-slow) var(--ease-std);
+        flex-shrink: 0;
+      }
+      .toggle-btn.on {
+        background: var(--accent);
+      }
+      .toggle-thumb {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--white);
+        transition: left var(--dur-slow) var(--ease-spring);
+      }
+      .toggle-btn.on .toggle-thumb {
+        left: 21px;
+      }
 
-  /* ── GLOBAL NAV ── */
-  #global-nav {
-    position: absolute; bottom: 0; left: 0; width: 100%;
-    z-index: 50; background: var(--nav-bg);
-    border-top: 1px solid var(--nav-border-color);
-    transition: background-color var(--dur-slow) var(--ease-std), border-color var(--dur-slow) var(--ease-std);
-  }
+      /* ── GLOBAL NAV ── */
+      #global-nav {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 50;
+        background: var(--nav-bg);
+        border-top: 1px solid var(--nav-border-color);
+        transition:
+          background-color var(--dur-slow) var(--ease-std),
+          border-color var(--dur-slow) var(--ease-std);
+      }
 
-  /* ── SCREEN TRANSITIONS ── */
-  @keyframes txInRight  { from { transform:translateX(100%); }         to { transform:translateX(0); } }
-  @keyframes txInLeft   { from { transform:translateX(-100%); }        to { transform:translateX(0); } }
-  @keyframes txOutLeft  { from { transform:translateX(0); opacity:1; } to { transform:translateX(-28%); opacity:0; } }
-  @keyframes txOutRight { from { transform:translateX(0); opacity:1; } to { transform:translateX(28%);  opacity:0; } }
-  .tx-in-right  { animation: txInRight  var(--dur-enter) var(--ease-spring) forwards; z-index:2; }
-  .tx-in-left   { animation: txInLeft   var(--dur-enter) var(--ease-spring) forwards; z-index:2; }
-  .tx-out-left  { animation: txOutLeft  var(--dur-in)    var(--ease-out)    forwards; }
-  .tx-out-right { animation: txOutRight var(--dur-in)    var(--ease-out)    forwards; }
+      /* ── SCREEN TRANSITIONS ── */
+      @keyframes txInRight {
+        from {
+          transform: translateX(100%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+      @keyframes txInLeft {
+        from {
+          transform: translateX(-100%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+      @keyframes txOutLeft {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(-28%);
+          opacity: 0;
+        }
+      }
+      @keyframes txOutRight {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(28%);
+          opacity: 0;
+        }
+      }
+      .tx-in-right {
+        animation: txInRight var(--dur-enter) var(--ease-spring) forwards;
+        z-index: 2;
+      }
+      .tx-in-left {
+        animation: txInLeft var(--dur-enter) var(--ease-spring) forwards;
+        z-index: 2;
+      }
+      .tx-out-left {
+        animation: txOutLeft var(--dur-in) var(--ease-out) forwards;
+      }
+      .tx-out-right {
+        animation: txOutRight var(--dur-in) var(--ease-out) forwards;
+      }
 
-  /* ── ENTRY TRANSITIONS (clean slide, no opacity) ── */
-  @keyframes txEntryIn  { from { transform:translateX(100%); } to { transform:translateX(0); } }
-  @keyframes txEntryOut { from { transform:translateX(0); }    to { transform:translateX(100%); } }
-  .tx-entry-in  { animation: txEntryIn  var(--dur-slow) var(--ease-out) forwards; z-index:3; }
-  .tx-entry-out { animation: txEntryOut var(--dur-slow) var(--ease-out) forwards; z-index:3; }
+      /* ── ENTRY TRANSITIONS (clean slide, no opacity) ── */
+      @keyframes txEntryIn {
+        from {
+          transform: translateX(100%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+      @keyframes txEntryOut {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(100%);
+        }
+      }
+      .tx-entry-in {
+        animation: txEntryIn var(--dur-slow) var(--ease-out) forwards;
+        z-index: 3;
+      }
+      .tx-entry-out {
+        animation: txEntryOut var(--dur-slow) var(--ease-out) forwards;
+        z-index: 3;
+      }
 
-  /* ── NAV FADE TRANSITIONS ── */
-  @keyframes navFadeOut { from { opacity:1; } to { opacity:0; } }
-  @keyframes navFadeIn  { from { opacity:0; } to { opacity:1; } }
-  .tx-fade-out { animation: navFadeOut var(--duration-fast) linear forwards; }
-  .tx-fade-in  { animation: navFadeIn  var(--duration-fast) linear forwards; }
+      /* ── NAV FADE TRANSITIONS ── */
+      @keyframes navFadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+      @keyframes navFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .tx-fade-out {
+        animation: navFadeOut var(--duration-fast) linear forwards;
+      }
+      .tx-fade-in {
+        animation: navFadeIn var(--duration-fast) linear forwards;
+      }
 
-  /* ── DELETE MODAL ── */
-  #delete-modal {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 200; align-items: center; justify-content: center;
-    display: none; background: rgba(0,0,0,0); cursor: pointer;
-  }
-  #delete-modal.open    { display: flex; animation: overlayIn  var(--dur-base) var(--ease-std) forwards; }
-  #delete-modal.closing { display: flex; animation: overlayOut var(--dur-fast) var(--ease-std) forwards; }
-  #delete-modal.open    .dialog-card { animation: dialogPop var(--dur-slow) var(--ease-spring) forwards; }
-  #delete-modal.closing .dialog-card { animation: dialogOut var(--dur-fast) var(--ease-std)   forwards; }
-  @keyframes overlayIn  { from { background:rgba(0,0,0,0); }   to { background:rgba(0,0,0,0.4); } }
-  @keyframes overlayOut { from { background:rgba(0,0,0,0.4); } to { background:rgba(0,0,0,0); } }
-  @keyframes dialogPop  { from { opacity:0; transform:scale(0.8); } to { opacity:1; transform:scale(1); } }
-  @keyframes dialogOut  { from { opacity:1; transform:scale(1);   } to { opacity:0; transform:scale(0.9); } }
-  .dialog-card {
-    background: var(--modal-bg); border-radius: var(--r-lg);
-    padding: var(--sp-xl) var(--sp-2xl) var(--sp-3xl); margin: 0 var(--sp-lg); text-align: center;
-    cursor: default; box-shadow: var(--shadow-modal); transition: background-color var(--dur-slow) var(--ease-std);
-  }
-  .delete-modal-btn {
-    flex: 1; border: none; border-radius: var(--r-pill); white-space: nowrap;
-    padding: var(--sp-md) var(--sp-lg); font-family: 'Pixelify Sans', sans-serif; font-size: var(--fs-btn); cursor: pointer;
-    transition: filter var(--dur-fast) var(--ease-std), transform var(--dur-fast) var(--ease-std);
-  }
-  .delete-modal-btn:hover  { filter: brightness(0.92); }
-  .delete-modal-btn:active { transform: scale(0.96); }
-  .delete-modal-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .keep-btn    { background: var(--accent-light); color: var(--size-pill-text); box-shadow: 3px 3px 0px #A898D8; }
-  .confirm-btn { background: var(--danger); color: var(--white); box-shadow: 3px 3px 0px #C45555; }
+      /* ── DELETE MODAL ── */
+      #delete-modal {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+        display: none;
+        background: rgba(0, 0, 0, 0);
+        cursor: pointer;
+      }
+      #delete-modal.open {
+        display: flex;
+        animation: overlayIn var(--dur-base) var(--ease-std) forwards;
+      }
+      #delete-modal.closing {
+        display: flex;
+        animation: overlayOut var(--dur-fast) var(--ease-std) forwards;
+      }
+      #delete-modal.open .dialog-card {
+        animation: dialogPop var(--dur-slow) var(--ease-spring) forwards;
+      }
+      #delete-modal.closing .dialog-card {
+        animation: dialogOut var(--dur-fast) var(--ease-std) forwards;
+      }
+      @keyframes overlayIn {
+        from {
+          background: rgba(0, 0, 0, 0);
+        }
+        to {
+          background: rgba(0, 0, 0, 0.4);
+        }
+      }
+      @keyframes overlayOut {
+        from {
+          background: rgba(0, 0, 0, 0.4);
+        }
+        to {
+          background: rgba(0, 0, 0, 0);
+        }
+      }
+      @keyframes dialogPop {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes dialogOut {
+        from {
+          opacity: 1;
+          transform: scale(1);
+        }
+        to {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+      }
+      .dialog-card {
+        background: var(--modal-bg);
+        border-radius: var(--r-lg);
+        padding: var(--sp-xl) var(--sp-2xl) var(--sp-3xl);
+        margin: 0 var(--sp-lg);
+        text-align: center;
+        cursor: default;
+        box-shadow: var(--shadow-modal);
+        transition: background-color var(--dur-slow) var(--ease-std);
+      }
+      .delete-modal-btn {
+        flex: 1;
+        border: none;
+        border-radius: var(--r-pill);
+        white-space: nowrap;
+        padding: var(--sp-md) var(--sp-lg);
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: var(--fs-btn);
+        cursor: pointer;
+        transition:
+          filter var(--dur-fast) var(--ease-std),
+          transform var(--dur-fast) var(--ease-std);
+      }
+      .delete-modal-btn:hover {
+        filter: brightness(0.92);
+      }
+      .delete-modal-btn:active {
+        transform: scale(0.96);
+      }
+      .delete-modal-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+      .keep-btn {
+        background: var(--accent-light);
+        color: var(--size-pill-text);
+        box-shadow: 3px 3px 0px #a898d8;
+      }
+      .confirm-btn {
+        background: var(--danger);
+        color: var(--white);
+        box-shadow: 3px 3px 0px #c45555;
+      }
 
-  /* ── CARD STAGGER ── */
-  @keyframes cardIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-  .card-stagger { animation: cardIn var(--dur-slow) var(--ease-spring) both; }
-  .card-stagger-cal { animation: cardIn 400ms var(--ease-bounce) both; }
+      /* ── CARD STAGGER ── */
+      @keyframes cardIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .card-stagger {
+        animation: cardIn var(--dur-slow) var(--ease-spring) both;
+      }
+      .card-stagger-cal {
+        animation: cardIn 400ms var(--ease-bounce) both;
+      }
 
-  /* ── CARDS: hover / press ── */
-  .card { transition: transform 200ms var(--ease-bounce), box-shadow 200ms var(--ease-bounce), background-color var(--dur-slow) var(--ease-std); }
-  .card:hover  { transform: translateY(-4px); box-shadow: 5px 5px 0px var(--card-shadow-color); }
-  .card:active { transform: scale(0.98); box-shadow: 3px 3px 0px var(--card-shadow-color); transition: transform 100ms var(--ease-bounce), box-shadow 100ms var(--ease-bounce); }
+      /* ── CARDS: hover / press ── */
+      .card {
+        transition:
+          transform 200ms var(--ease-bounce),
+          box-shadow 200ms var(--ease-bounce),
+          background-color var(--dur-slow) var(--ease-std);
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 5px 5px 0px var(--card-shadow-color);
+      }
+      .card:active {
+        transform: scale(0.98);
+        box-shadow: 3px 3px 0px var(--card-shadow-color);
+        transition:
+          transform 100ms var(--ease-bounce),
+          box-shadow 100ms var(--ease-bounce);
+      }
 
-  /* ── NAV BAR ICONS ── */
-  .nav-btn iconify-icon { opacity: 0.5; transition: opacity 0.1s var(--ease-std), transform 0.1s var(--ease-std); }
-  .nav-btn.active iconify-icon { color: var(--white); opacity: 1; }
-  .nav-btn:hover:not(.active) iconify-icon { opacity: 0.8; }
-  .nav-btn:active:not(.active) iconify-icon { transform: scale(0.95); }
+      /* ── NAV BAR ICONS ── */
+      .nav-btn iconify-icon {
+        opacity: 0.5;
+        transition:
+          opacity 0.1s var(--ease-std),
+          transform 0.1s var(--ease-std);
+      }
+      .nav-btn.active iconify-icon {
+        color: var(--white);
+        opacity: 1;
+      }
+      .nav-btn:hover:not(.active) iconify-icon {
+        opacity: 0.8;
+      }
+      .nav-btn:active:not(.active) iconify-icon {
+        transform: scale(0.95);
+      }
 
-  /* ── TRASH ICON ── */
-  #delete-btn { transition: transform var(--dur-fast) var(--ease-spring); }
-  #delete-btn iconify-icon { transition: color var(--dur-fast) var(--ease-std), transform var(--dur-fast) var(--ease-spring); }
-  #delete-btn:hover  iconify-icon { color: var(--danger) !important; transform: scale(1.1); }
-  #delete-btn:active iconify-icon { transform: scale(0.9); }
+      /* ── TRASH ICON ── */
+      #delete-btn {
+        transition: transform var(--dur-fast) var(--ease-spring);
+      }
+      #delete-btn iconify-icon {
+        transition:
+          color var(--dur-fast) var(--ease-std),
+          transform var(--dur-fast) var(--ease-spring);
+      }
+      #delete-btn:hover iconify-icon {
+        color: var(--danger) !important;
+        transform: scale(1.1);
+      }
+      #delete-btn:active iconify-icon {
+        transform: scale(0.9);
+      }
 
-  /* ── COLOR SWATCHES ── */
-  @keyframes swatchPop { 0%{transform:scale(1)} 55%{transform:scale(1.25)} 100%{transform:scale(1.15)} }
-  .swatch { transition: transform var(--dur-base) var(--ease-spring); }
-  .swatch.selected { border-color: var(--accent); transform: scale(1.15); animation: swatchPop var(--dur-slow) var(--ease-spring); }
-  .swatch:hover:not(.selected) { transform: scale(1.1); }
-  .swatch:active { transform: scale(0.95) !important; }
+      /* ── COLOR SWATCHES ── */
+      @keyframes swatchPop {
+        0% {
+          transform: scale(1);
+        }
+        55% {
+          transform: scale(1.25);
+        }
+        100% {
+          transform: scale(1.15);
+        }
+      }
+      .swatch {
+        transition: transform var(--dur-base) var(--ease-spring);
+      }
+      .swatch.selected {
+        border-color: var(--accent);
+        transform: scale(1.15);
+        animation: swatchPop var(--dur-slow) var(--ease-spring);
+      }
+      .swatch:hover:not(.selected) {
+        transform: scale(1.1);
+      }
+      .swatch:active {
+        transform: scale(0.95) !important;
+      }
 
-  /* ── PROFILE PICTURE ── */
-  .avatar-wrap { position: relative; width: 72px; margin: 0 auto 10px; cursor: pointer; }
-  .avatar-wrap:hover .avatar { filter: brightness(0.92); }
-  .avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .avatar-emoji { font-size: 34px; line-height: 1; }
-  .camera-badge {
-    position: absolute; bottom: 0; right: 0;
-    width: 22px; height: 22px; border-radius: 50%;
-    background: var(--accent); border: 2.5px solid var(--bg);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .home-avatar {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: var(--neutral); border: none; cursor: pointer; padding: 0;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden; flex-shrink: 0;
-    transition: transform var(--dur-fast) var(--ease-spring), opacity var(--dur-fast) var(--ease-std);
-  }
-  .home-avatar:hover  { transform: scale(1.1); opacity: 0.85; }
-  .home-avatar:active { transform: scale(0.93); }
-  .home-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .home-avatar-emoji { font-size: 17px; line-height: 1; }
+      /* ── PROFILE PICTURE ── */
+      .avatar-wrap {
+        position: relative;
+        width: 72px;
+        margin: 0 auto 10px;
+        cursor: pointer;
+      }
+      .avatar-wrap:hover .avatar {
+        filter: brightness(0.92);
+      }
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .avatar-emoji {
+        font-size: 34px;
+        line-height: 1;
+      }
+      .camera-badge {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: 2.5px solid var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .home-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--neutral);
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-shrink: 0;
+        transition:
+          transform var(--dur-fast) var(--ease-spring),
+          opacity var(--dur-fast) var(--ease-std);
+      }
+      .home-avatar:hover {
+        transform: scale(1.1);
+        opacity: 0.85;
+      }
+      .home-avatar:active {
+        transform: scale(0.93);
+      }
+      .home-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .home-avatar-emoji {
+        font-size: 17px;
+        line-height: 1;
+      }
 
-  /* ── PHOTO MODAL ── */
-  #photo-modal {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 200; align-items: center; justify-content: center;
-    display: none; background: rgba(0,0,0,0); cursor: pointer;
-  }
-  #photo-modal.open    { display: flex; animation: overlayIn  var(--dur-base) var(--ease-std) forwards; }
-  #photo-modal.closing { display: flex; animation: overlayOut var(--dur-fast) var(--ease-std) forwards; }
-  #photo-modal.open    #photo-modal-card { animation: dialogPop var(--dur-slow) var(--ease-spring) forwards; }
-  #photo-modal.closing #photo-modal-card { animation: dialogOut var(--dur-fast) var(--ease-std)   forwards; }
-  #photo-modal-card {
-    background: var(--modal-bg); border-radius: var(--r-lg); box-shadow: var(--shadow-modal);
-    padding: var(--sp-2xl) var(--sp-2xl) var(--sp-3xl); margin: 0 var(--sp-lg);
-    width: 100%; cursor: default; position: relative;
-    transition: background-color var(--dur-slow) var(--ease-std);
-  }
-  .photo-modal-close {
-    position: absolute; top: var(--sp-lg); right: var(--sp-lg);
-    background: none; border: none; cursor: pointer; color: var(--text-2); padding: 0;
-    display: flex; align-items: center;
-    transition: color var(--dur-slow) var(--ease-std), opacity var(--dur-fast) var(--ease-std);
-  }
-  .photo-modal-close:hover { opacity: 0.7; }
-  .photo-modal-title {
-    font-size: var(--font-size-lg); color: var(--text-1); text-align: center;
-    margin: var(--sp-sm) 0 var(--sp-xl);
-    transition: color var(--dur-slow) var(--ease-std);
-  }
-  .photo-modal-btn {
-    display: flex; align-items: center; justify-content: center; gap: var(--sp-sm);
-    border: none; border-radius: var(--r-pill);
-    padding: var(--sp-md) var(--sp-2xl); font-family: 'Pixelify Sans', sans-serif; font-size: var(--fs-btn);
-    cursor: pointer; width: 100%;
-    transition: filter var(--dur-fast) var(--ease-std), transform var(--dur-fast) var(--ease-std);
-  }
-  .photo-modal-btn:hover  { filter: brightness(0.92); }
-  .photo-modal-btn:active { transform: scale(0.96); }
-  .photo-modal-btn-primary   { background: var(--accent); color: var(--white); box-shadow: 3px 3px 0px #3A4F8A; }
-  .photo-modal-btn-secondary { background: var(--accent-light); color: var(--text-1); box-shadow: 3px 3px 0px #A898D8; }
-  .photo-modal-back {
-    background: none; border: none; cursor: pointer; color: var(--text-2); padding: 0;
-    display: flex; align-items: center; gap: 4px; margin-bottom: var(--sp-md);
-    font-family: 'Pixelify Sans', sans-serif; font-size: var(--fs-label);
-    transition: color var(--dur-slow) var(--ease-std), opacity var(--dur-fast) var(--ease-std);
-  }
-  .photo-modal-back:hover { opacity: 0.7; }
-  #avatar-preview-wrap { display: flex; justify-content: center; margin-bottom: var(--sp-lg); }
-  #avatar-preview {
-    width: 64px; height: 64px; border-radius: 50%; background: var(--surface);
-    display: flex; align-items: center; justify-content: center; font-size: 30px;
-    transition: background-color var(--dur-fast) var(--ease-std);
-  }
-  .picker-label { font-size: var(--fs-label); color: var(--text-2); margin-bottom: var(--sp-sm); transition: color var(--dur-slow) var(--ease-std); }
-  #avatar-confirm-prompt {
-    background: var(--surface); border-radius: var(--r-sm); padding: var(--sp-md);
-    margin-top: var(--sp-md); text-align: center;
-    transition: background-color var(--dur-slow) var(--ease-std);
-  }
-  .avatar-prompt-text { font-size: var(--fs-label); color: var(--text-1); margin-bottom: var(--sp-sm); transition: color var(--dur-slow) var(--ease-std); }
-  .avatar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-sm); margin: var(--sp-sm) 0; }
-  .avatar-option {
-    aspect-ratio: 1; border-radius: 50%; background: var(--surface);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; cursor: pointer; border: 2.5px solid transparent;
-    transition: transform var(--dur-fast) var(--ease-std), border-color 0.1s var(--ease-std);
-  }
-  .avatar-option:hover:not(.selected) { transform: scale(1.06); }
-  .avatar-option:active { transform: scale(0.93) !important; }
-  .avatar-option.selected { border-color: var(--accent-light); }
-  .avatar-bg-row { display: flex; gap: var(--sp-sm); flex-wrap: wrap; justify-content: center; }
-  .avatar-bg-option {
-    width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
-    border: 2.5px solid transparent; flex-shrink: 0;
-    transition: transform var(--dur-fast) var(--ease-std), border-color 0.1s var(--ease-std);
-  }
-  .avatar-bg-option:hover:not(.selected) { transform: scale(1.1); }
-  .avatar-bg-option.selected { border-color: var(--accent-light); transform: scale(1.1); }
-  body.dark .avatar-bg-option { border-color: rgba(255,255,255,0.15); }
+      /* ── PHOTO MODAL ── */
+      #photo-modal {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+        display: none;
+        background: rgba(0, 0, 0, 0);
+        cursor: pointer;
+      }
+      #photo-modal.open {
+        display: flex;
+        animation: overlayIn var(--dur-base) var(--ease-std) forwards;
+      }
+      #photo-modal.closing {
+        display: flex;
+        animation: overlayOut var(--dur-fast) var(--ease-std) forwards;
+      }
+      #photo-modal.open #photo-modal-card {
+        animation: dialogPop var(--dur-slow) var(--ease-spring) forwards;
+      }
+      #photo-modal.closing #photo-modal-card {
+        animation: dialogOut var(--dur-fast) var(--ease-std) forwards;
+      }
+      #photo-modal-card {
+        background: var(--modal-bg);
+        border-radius: var(--r-lg);
+        box-shadow: var(--shadow-modal);
+        padding: var(--sp-2xl) var(--sp-2xl) var(--sp-3xl);
+        margin: 0 var(--sp-lg);
+        width: 100%;
+        cursor: default;
+        position: relative;
+        transition: background-color var(--dur-slow) var(--ease-std);
+      }
+      .photo-modal-close {
+        position: absolute;
+        top: var(--sp-lg);
+        right: var(--sp-lg);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-2);
+        padding: 0;
+        display: flex;
+        align-items: center;
+        transition:
+          color var(--dur-slow) var(--ease-std),
+          opacity var(--dur-fast) var(--ease-std);
+      }
+      .photo-modal-close:hover {
+        opacity: 0.7;
+      }
+      .photo-modal-title {
+        font-size: var(--font-size-lg);
+        color: var(--text-1);
+        text-align: center;
+        margin: var(--sp-sm) 0 var(--sp-xl);
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .photo-modal-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--sp-sm);
+        border: none;
+        border-radius: var(--r-pill);
+        padding: var(--sp-md) var(--sp-2xl);
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: var(--fs-btn);
+        cursor: pointer;
+        width: 100%;
+        transition:
+          filter var(--dur-fast) var(--ease-std),
+          transform var(--dur-fast) var(--ease-std);
+      }
+      .photo-modal-btn:hover {
+        filter: brightness(0.92);
+      }
+      .photo-modal-btn:active {
+        transform: scale(0.96);
+      }
+      .photo-modal-btn-primary {
+        background: var(--accent);
+        color: var(--white);
+        box-shadow: 3px 3px 0px #3a4f8a;
+      }
+      .photo-modal-btn-secondary {
+        background: var(--accent-light);
+        color: var(--text-1);
+        box-shadow: 3px 3px 0px #a898d8;
+      }
+      .photo-modal-back {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-2);
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-bottom: var(--sp-md);
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: var(--fs-label);
+        transition:
+          color var(--dur-slow) var(--ease-std),
+          opacity var(--dur-fast) var(--ease-std);
+      }
+      .photo-modal-back:hover {
+        opacity: 0.7;
+      }
+      #avatar-preview-wrap {
+        display: flex;
+        justify-content: center;
+        margin-bottom: var(--sp-lg);
+      }
+      #avatar-preview {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: var(--surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        transition: background-color var(--dur-fast) var(--ease-std);
+      }
+      .picker-label {
+        font-size: var(--fs-label);
+        color: var(--text-2);
+        margin-bottom: var(--sp-sm);
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      #avatar-confirm-prompt {
+        background: var(--surface);
+        border-radius: var(--r-sm);
+        padding: var(--sp-md);
+        margin-top: var(--sp-md);
+        text-align: center;
+        transition: background-color var(--dur-slow) var(--ease-std);
+      }
+      .avatar-prompt-text {
+        font-size: var(--fs-label);
+        color: var(--text-1);
+        margin-bottom: var(--sp-sm);
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .avatar-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--sp-sm);
+        margin: var(--sp-sm) 0;
+      }
+      .avatar-option {
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: var(--surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        cursor: pointer;
+        border: 2.5px solid transparent;
+        transition:
+          transform var(--dur-fast) var(--ease-std),
+          border-color 0.1s var(--ease-std);
+      }
+      .avatar-option:hover:not(.selected) {
+        transform: scale(1.06);
+      }
+      .avatar-option:active {
+        transform: scale(0.93) !important;
+      }
+      .avatar-option.selected {
+        border-color: var(--accent-light);
+      }
+      .avatar-bg-row {
+        display: flex;
+        gap: var(--sp-sm);
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .avatar-bg-option {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2.5px solid transparent;
+        flex-shrink: 0;
+        transition:
+          transform var(--dur-fast) var(--ease-std),
+          border-color 0.1s var(--ease-std);
+      }
+      .avatar-bg-option:hover:not(.selected) {
+        transform: scale(1.1);
+      }
+      .avatar-bg-option.selected {
+        border-color: var(--accent-light);
+        transform: scale(1.1);
+      }
+      body.dark .avatar-bg-option {
+        border-color: rgba(255, 255, 255, 0.15);
+      }
 
-  /* ── EMPTY STATE ── */
-  .empty-state { padding: var(--sp-4xl) var(--sp-xl) 0; text-align: center; animation: cardIn var(--dur-enter) var(--ease-spring) both; }
-  .journal-illus { width: 88px; height: 68px; position: relative; margin: 0 auto 24px; }
-  .journal-left  { position: absolute; left: 0; top: 4px; width: 38px; height: 60px; background: var(--accent-lighter); border-radius: var(--r-sm) 0 0 var(--r-sm); box-shadow: var(--shadow-journal); }
-  .journal-right { position: absolute; right: 0; top: 4px; width: 38px; height: 60px; background: var(--accent-light); border-radius: 0 var(--r-sm) var(--r-sm) var(--r-sm); }
-  .journal-spine { position: absolute; left: 37px; top: 0; width: 7px; height: 68px; background: var(--accent); border-radius: 3px; z-index: 1; }
-  .journal-left::after, .journal-right::after {
-    content: ''; position: absolute; left: 6px; top: 14px; right: 8px; height: 2px;
-    background: var(--journal-line-1); border-radius: 1px;
-    box-shadow: var(--shadow-journal-lines);
-  }
-  .journal-right::after { left: 8px; right: 6px; }
-  .empty-title { font-size: 18px; font-weight: 700; color: var(--text-1); margin-bottom: 8px; transition: color var(--dur-slow) var(--ease-std); }
-  .empty-sub   { font-size: var(--fs-label); color: var(--text-2); transition: color var(--dur-slow) var(--ease-std); }
+      /* ── EMPTY STATE ── */
+      .empty-state {
+        padding: var(--sp-4xl) var(--sp-xl) 0;
+        text-align: center;
+        animation: cardIn var(--dur-enter) var(--ease-spring) both;
+      }
+      .journal-illus {
+        width: 88px;
+        height: 68px;
+        position: relative;
+        margin: 0 auto 24px;
+      }
+      .journal-left {
+        position: absolute;
+        left: 0;
+        top: 4px;
+        width: 38px;
+        height: 60px;
+        background: var(--accent-lighter);
+        border-radius: var(--r-sm) 0 0 var(--r-sm);
+        box-shadow: var(--shadow-journal);
+      }
+      .journal-right {
+        position: absolute;
+        right: 0;
+        top: 4px;
+        width: 38px;
+        height: 60px;
+        background: var(--accent-light);
+        border-radius: 0 var(--r-sm) var(--r-sm) var(--r-sm);
+      }
+      .journal-spine {
+        position: absolute;
+        left: 37px;
+        top: 0;
+        width: 7px;
+        height: 68px;
+        background: var(--accent);
+        border-radius: 3px;
+        z-index: 1;
+      }
+      .journal-left::after,
+      .journal-right::after {
+        content: "";
+        position: absolute;
+        left: 6px;
+        top: 14px;
+        right: 8px;
+        height: 2px;
+        background: var(--journal-line-1);
+        border-radius: 1px;
+        box-shadow: var(--shadow-journal-lines);
+      }
+      .journal-right::after {
+        left: 8px;
+        right: 6px;
+      }
+      .empty-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text-1);
+        margin-bottom: 8px;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .empty-sub {
+        font-size: var(--fs-label);
+        color: var(--text-2);
+        transition: color var(--dur-slow) var(--ease-std);
+      }
 
-  /* ── SETTINGS SWATCHES ── */
-  #settings-swatches { justify-content: center; }
+      /* ── SETTINGS SWATCHES ── */
+      #settings-swatches {
+        justify-content: center;
+      }
 
-  /* ── WEATHER ICON ── */
-  #home-weather-icon { color: var(--text-2); }
+      /* ── WEATHER ICON ── */
+      #home-weather-icon {
+        color: var(--text-2);
+      }
 
-  /* ── PROMPT CARD ── */
-  .prompt-card {
-    background: var(--modal-bg); border: 1.5px solid var(--accent-light); border-radius: var(--r-md);
-    padding: 14px var(--sp-lg); margin-bottom: var(--sp-lg); cursor: pointer;
-    box-shadow: var(--shadow-modal);
-    animation: cardIn var(--dur-slow) var(--ease-spring) both;
-    transition: background-color var(--dur-slow) var(--ease-std), transform var(--dur-fast) var(--ease-std), box-shadow var(--dur-fast) var(--ease-std);
-  }
-  .prompt-card:hover  { transform: translateY(-2px); }
-  .prompt-card:active { transform: scale(0.98); }
-  .prompt-label {
-    font-size: 12px; color: var(--text-2); margin-bottom: 6px;
-    display: flex; align-items: center; justify-content: space-between;
-    transition: color var(--dur-slow) var(--ease-std);
-  }
-  .prompt-refresh {
-    background: none; border: none; cursor: pointer; color: var(--text-2);
-    padding: 0; display: flex; align-items: center; gap: 3px;
-    font-family: 'Pixelify Sans', sans-serif; font-size: 12px;
-    transition: color var(--dur-slow) var(--ease-std), opacity var(--dur-fast) var(--ease-std);
-  }
-  .prompt-refresh:hover { opacity: 0.7; }
-  .prompt-text { font-size: var(--fs-prompt); color: var(--text-1); line-height: 1.5; transition: color var(--dur-slow) var(--ease-std); }
+      /* ── PROMPT CARD ── */
+      .prompt-card {
+        background: var(--modal-bg);
+        border: 1.5px solid var(--accent-light);
+        border-radius: var(--r-md);
+        padding: 14px var(--sp-lg);
+        margin-bottom: var(--sp-lg);
+        cursor: pointer;
+        box-shadow: var(--shadow-modal);
+        animation: cardIn var(--dur-slow) var(--ease-spring) both;
+        transition:
+          background-color var(--dur-slow) var(--ease-std),
+          transform var(--dur-fast) var(--ease-std),
+          box-shadow var(--dur-fast) var(--ease-std);
+      }
+      .prompt-card:hover {
+        transform: translateY(-2px);
+      }
+      .prompt-card:active {
+        transform: scale(0.98);
+      }
+      .prompt-label {
+        font-size: 12px;
+        color: var(--text-2);
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
+      .prompt-refresh {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-2);
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: 12px;
+        transition:
+          color var(--dur-slow) var(--ease-std),
+          opacity var(--dur-fast) var(--ease-std);
+      }
+      .prompt-refresh:hover {
+        opacity: 0.7;
+      }
+      .prompt-text {
+        font-size: var(--fs-prompt);
+        color: var(--text-1);
+        line-height: 1.5;
+        transition: color var(--dur-slow) var(--ease-std);
+      }
 
-</style>
-</head>
-<body>
-<div id="app">
-
-  <!-- ════ HOME ════ -->
-  <div id="screen-home" class="screen">
-    <div class="scroll" style="padding-bottom:90px;">
-      <div class="home-pad">
-        <div class="header" style="position:relative;">
-          <button class="home-avatar" id="home-avatar-btn" onclick="showScreen('settings')" style="position:absolute;top:0;right:0;" title="Profile"></button>
-          <div class="date-row">
-            <iconify-icon id="home-weather-icon" icon="ph:sun" style="font-size:26px;"></iconify-icon>
-            <strong id="home-date">Tue, Mar 3rd</strong>
+      /* ── CUSTOM SCROLLBARS ── */
+      .scroll::-webkit-scrollbar,
+      .entry-scroll::-webkit-scrollbar {
+        width: 4px;
+      }
+      .scroll::-webkit-scrollbar-track,
+      .entry-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .scroll::-webkit-scrollbar-thumb,
+      .entry-scroll::-webkit-scrollbar-thumb {
+        background: var(--accent-light);
+        border-radius: var(--r-pill);
+      }
+      .scroll::-webkit-scrollbar-thumb:hover,
+      .entry-scroll::-webkit-scrollbar-thumb:hover {
+        background: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- ════ HOME ════ -->
+      <div id="screen-home" class="screen">
+        <div class="scroll" style="padding-bottom: calc(80px + env(safe-area-inset-bottom))">
+          <div class="home-pad">
+            <div class="header" style="position: relative">
+              <button
+                class="home-avatar"
+                id="home-avatar-btn"
+                onclick="showScreen('settings')"
+                style="position: absolute; top: 0; right: 0"
+                title="Profile"
+              ></button>
+              <div class="date-row">
+                <iconify-icon
+                  id="home-weather-icon"
+                  icon="ph:sun"
+                  style="font-size: 26px"
+                ></iconify-icon>
+                <strong id="home-date">Tue, Mar 3rd</strong>
+              </div>
+              <div class="subtitle" id="home-subtitle">
+                How are you feeling today?
+              </div>
+            </div>
+            <div style="text-align: center; margin-bottom: 32px">
+              <button class="write-btn" onclick="openNewEntry()">
+                <iconify-icon
+                  icon="pixelarticons:plus"
+                  style="font-size: 18px"
+                ></iconify-icon>
+                Write something
+              </button>
+            </div>
+            <div id="home-prompt"></div>
+            <div class="section-label" id="entries-label">Recent Entries</div>
+            <div id="home-entries"></div>
           </div>
-          <div class="subtitle" id="home-subtitle">How are you feeling today?</div>
         </div>
-        <div style="text-align:center;margin-bottom:32px;">
-          <button class="write-btn" onclick="openNewEntry()">
-            <iconify-icon icon="pixelarticons:plus" style="font-size:18px;"></iconify-icon>
-            Write something
+      </div>
+
+      <!-- ════ ENTRY ════ -->
+      <div id="screen-entry" class="screen hidden">
+        <div class="entry-top">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <button class="back-btn" onclick="saveEntry()">
+              <iconify-icon icon="pixelarticons:chevron-left"></iconify-icon>
+            </button>
+            <button
+              id="delete-btn"
+              onclick="showDeleteDialog()"
+              style="
+                background: none;
+                border: none;
+                cursor: pointer;
+                display: none;
+                padding: 0;
+              "
+            >
+              <iconify-icon
+                icon="pixelarticons:trash"
+                style="font-size: 22px; color: var(--text-2)"
+              ></iconify-icon>
+            </button>
+          </div>
+          <div class="entry-meta">
+            <div class="entry-meta-left">
+              <iconify-icon
+                id="entry-weather"
+                icon="ph:sun"
+                style="font-size: 16px; color: var(--text-2)"
+              ></iconify-icon>
+              <span
+                id="entry-temp"
+                style="color: var(--text-2); font-size: 12px"
+              ></span>
+              <span id="entry-date" style="color: var(--text-2)">Date</span>
+            </div>
+            <span id="entry-time" style="color: var(--text-2)">00:00 PM</span>
+          </div>
+        </div>
+        <div class="entry-scroll">
+          <input
+            type="text"
+            class="entry-title-inp"
+            id="entry-title"
+            placeholder="My Thoughts"
+          />
+          <button class="inspire-btn" onclick="insertPrompt()">
+            <iconify-icon
+              icon="ph:sparkle"
+              style="font-size: 13px"
+            ></iconify-icon>
+            need inspiration?
           </button>
+          <textarea
+            class="entry-body-inp"
+            id="entry-body"
+            placeholder="What's on your mind?"
+          ></textarea>
         </div>
-        <div id="home-prompt"></div>
-        <div class="section-label" id="entries-label">Recent Entries</div>
-        <div id="home-entries"></div>
+        <div class="swatches">
+          <div
+            class="swatch selected"
+            data-color="pink"
+            style="background: #ffd9f1"
+            onclick="setColor(this, 'pink')"
+          ></div>
+          <div
+            class="swatch"
+            data-color="yellow"
+            style="background: #fff3c4"
+            onclick="setColor(this, 'yellow')"
+          ></div>
+          <div
+            class="swatch"
+            data-color="blue"
+            style="background: #bcd2ff"
+            onclick="setColor(this, 'blue')"
+          ></div>
+          <div
+            class="swatch"
+            data-color="lavender"
+            style="background: #d6c3ff"
+            onclick="setColor(this, 'lavender')"
+          ></div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- ════ ENTRY ════ -->
-  <div id="screen-entry" class="screen hidden">
-    <div class="entry-top">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <button class="back-btn" onclick="saveEntry()">
-          <iconify-icon icon="pixelarticons:chevron-left"></iconify-icon>
-        </button>
-        <button id="delete-btn" onclick="showDeleteDialog()" style="background:none;border:none;cursor:pointer;display:none;padding:0;">
-          <iconify-icon icon="pixelarticons:trash" style="font-size:22px;color:var(--text-2);"></iconify-icon>
-        </button>
-      </div>
-      <div class="entry-meta">
-        <div class="entry-meta-left">
-          <iconify-icon id="entry-weather" icon="ph:sun" style="font-size:16px;color:var(--text-2);"></iconify-icon>
-          <span id="entry-temp" style="color:var(--text-2);font-size:12px;"></span>
-          <span id="entry-date" style="color:var(--text-2);">Date</span>
+      <!-- ════ CALENDAR ════ -->
+      <div id="screen-calendar" class="screen hidden">
+        <div class="screen-head">
+          <div class="screen-title">Calendar</div>
+          <div class="search-bar">
+            <iconify-icon
+              icon="pixelarticons:search"
+              style="font-size: 18px; color: var(--text-2); flex-shrink: 0"
+            ></iconify-icon>
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search"
+              oninput="handleSearch(this.value)"
+            />
+          </div>
         </div>
-        <span id="entry-time" style="color:var(--text-2);">00:00 PM</span>
+        <div class="scroll" style="padding: 0 20px calc(80px + env(safe-area-inset-bottom))">
+          <div id="cal-view">
+            <div class="cal-nav">
+              <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+              <span class="cal-month" id="cal-label"></span>
+              <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
+            <div class="sub-label">Selected Day's Entries</div>
+            <div id="cal-entries"></div>
+          </div>
+          <div id="search-view" style="display: none">
+            <div class="sub-label" id="search-label"></div>
+            <div id="search-entries"></div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="entry-scroll">
-      <input type="text" class="entry-title-inp" id="entry-title" placeholder="My Thoughts">
-      <button class="inspire-btn" onclick="insertPrompt()">
-        <iconify-icon icon="ph:sparkle" style="font-size:13px;"></iconify-icon>
-        need inspiration?
-      </button>
-      <textarea class="entry-body-inp" id="entry-body" placeholder="What's on your mind?"></textarea>
-    </div>
-    <div class="swatches">
-      <div class="swatch selected" data-color="pink"     style="background:#FFD9F1;" onclick="setColor(this,'pink')"></div>
-      <div class="swatch"          data-color="yellow"   style="background:#FFF3C4;" onclick="setColor(this,'yellow')"></div>
-      <div class="swatch"          data-color="blue"     style="background:#BCD2FF;" onclick="setColor(this,'blue')"></div>
-      <div class="swatch"          data-color="lavender" style="background:#D6C3FF;" onclick="setColor(this,'lavender')"></div>
-    </div>
-  </div>
 
-  <!-- ════ CALENDAR ════ -->
-  <div id="screen-calendar" class="screen hidden">
-    <div class="screen-head">
-      <div class="screen-title">Calendar</div>
-      <div class="search-bar">
-        <iconify-icon icon="pixelarticons:search" style="font-size:18px;color:var(--text-2);flex-shrink:0;"></iconify-icon>
-        <input type="text" id="search-input" placeholder="Search" oninput="handleSearch(this.value)">
-      </div>
-    </div>
-    <div class="scroll" style="padding:0 20px 90px;">
-      <div id="cal-view">
-        <div class="cal-nav">
-          <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
-          <span class="cal-month" id="cal-label"></span>
-          <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+      <!-- ════ SETTINGS ════ -->
+      <div id="screen-settings" class="screen hidden">
+        <div class="scroll" style="padding: calc(48px + env(safe-area-inset-top)) 20px calc(80px + env(safe-area-inset-bottom))">
+          <div class="screen-title">Settings</div>
+          <div id="settings-saved">saved ✓</div>
+          <div class="avatar-wrap" onclick="showPhotoModal()">
+            <div class="avatar" id="avatar-display">
+              <iconify-icon
+                icon="pixelarticons:user"
+                style="font-size: 32px; color: var(--icon-inactive)"
+              ></iconify-icon>
+            </div>
+            <div class="camera-badge">
+              <iconify-icon
+                icon="pixelarticons:camera"
+                style="font-size: 12px; color: white"
+              ></iconify-icon>
+            </div>
+          </div>
+          <div class="settings-name-disp" id="settings-name-disp">
+            Your Name
+          </div>
+          <div class="settings-label">what should we call you?</div>
+          <input
+            type="text"
+            class="settings-input"
+            id="settings-name-input"
+            placeholder="Name"
+          />
+          <div class="settings-label">default entry color</div>
+          <div
+            style="display: flex; gap: 14px; margin-bottom: 24px"
+            id="settings-swatches"
+          >
+            <div
+              class="swatch selected"
+              data-color="pink"
+              style="width: 40px; height: 40px; background: #ffd9f1"
+              onclick="setDefaultColor(this, 'pink')"
+            ></div>
+            <div
+              class="swatch"
+              data-color="yellow"
+              style="width: 40px; height: 40px; background: #fff3c4"
+              onclick="setDefaultColor(this, 'yellow')"
+            ></div>
+            <div
+              class="swatch"
+              data-color="blue"
+              style="width: 40px; height: 40px; background: #bcd2ff"
+              onclick="setDefaultColor(this, 'blue')"
+            ></div>
+            <div
+              class="swatch"
+              data-color="lavender"
+              style="width: 40px; height: 40px; background: #d6c3ff"
+              onclick="setDefaultColor(this, 'lavender')"
+            ></div>
+          </div>
+          <div class="settings-label">text size</div>
+          <div class="size-pill-row">
+            <button
+              class="size-btn"
+              data-size="small"
+              onclick="setFontSz('small')"
+            >
+              small
+            </button>
+            <button
+              class="size-btn"
+              data-size="medium"
+              onclick="setFontSz('medium')"
+            >
+              medium
+            </button>
+            <button
+              class="size-btn"
+              data-size="large"
+              onclick="setFontSz('large')"
+            >
+              large
+            </button>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-label">
+              <iconify-icon
+                icon="pixelarticons:moon"
+                style="font-size: 18px"
+              ></iconify-icon>
+              dark mode
+            </div>
+            <button class="toggle-btn" id="dark-toggle" onclick="toggleDark()">
+              <div class="toggle-thumb"></div>
+            </button>
+          </div>
         </div>
-        <div class="cal-grid" id="cal-grid"></div>
-        <div class="sub-label">Selected Day's Entries</div>
-        <div id="cal-entries"></div>
       </div>
-      <div id="search-view" style="display:none;">
-        <div class="sub-label" id="search-label"></div>
-        <div id="search-entries"></div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ════ SETTINGS ════ -->
-  <div id="screen-settings" class="screen hidden">
-    <div class="scroll" style="padding:48px 20px 90px;">
-      <div class="screen-title">Settings</div>
-      <div id="settings-saved">saved ✓</div>
-      <div class="avatar-wrap" onclick="showPhotoModal()">
-        <div class="avatar" id="avatar-display">
-          <iconify-icon icon="pixelarticons:user" style="font-size:32px;color:var(--icon-inactive);"></iconify-icon>
-        </div>
-        <div class="camera-badge">
-          <iconify-icon icon="pixelarticons:camera" style="font-size:12px;color:white;"></iconify-icon>
-        </div>
-      </div>
-      <div class="settings-name-disp" id="settings-name-disp">Your Name</div>
-      <div class="settings-label">what should we call you?</div>
-      <input type="text" class="settings-input" id="settings-name-input" placeholder="Name">
-      <div class="settings-label">default entry color</div>
-      <div style="display:flex;gap:14px;margin-bottom:24px;" id="settings-swatches">
-        <div class="swatch selected" data-color="pink"     style="width:40px;height:40px;background:#FFD9F1;" onclick="setDefaultColor(this,'pink')"></div>
-        <div class="swatch"          data-color="yellow"   style="width:40px;height:40px;background:#FFF3C4;" onclick="setDefaultColor(this,'yellow')"></div>
-        <div class="swatch"          data-color="blue"     style="width:40px;height:40px;background:#BCD2FF;" onclick="setDefaultColor(this,'blue')"></div>
-        <div class="swatch"          data-color="lavender" style="width:40px;height:40px;background:#D6C3FF;" onclick="setDefaultColor(this,'lavender')"></div>
-      </div>
-      <div class="settings-label">text size</div>
-      <div class="size-pill-row">
-        <button class="size-btn" data-size="small"  onclick="setFontSz('small')">small</button>
-        <button class="size-btn" data-size="medium" onclick="setFontSz('medium')">medium</button>
-        <button class="size-btn" data-size="large"  onclick="setFontSz('large')">large</button>
-      </div>
-      <div class="toggle-row">
-        <div class="toggle-label">
-          <iconify-icon icon="pixelarticons:moon" style="font-size:18px;"></iconify-icon>
-          dark mode
-        </div>
-        <button class="toggle-btn" id="dark-toggle" onclick="toggleDark()">
-          <div class="toggle-thumb"></div>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ════ PHOTO MODAL ════ -->
-  <div id="photo-modal" onclick="handlePhotoModalOverlay(event)">
-    <div id="photo-modal-card" onclick="event.stopPropagation()">
-      <button class="photo-modal-close" onclick="handlePhotoModalClose()">
-        <iconify-icon icon="pixelarticons:x" style="font-size:20px;"></iconify-icon>
-      </button>
-
-      <!-- View 1: main options -->
-      <div id="photo-main-view">
-        <div class="photo-modal-title">update your photo</div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <button class="photo-modal-btn photo-modal-btn-primary" onclick="triggerFileInput()">
-            <iconify-icon icon="pixelarticons:upload" style="font-size:16px;"></iconify-icon>
-            upload a photo
+      <!-- ════ PHOTO MODAL ════ -->
+      <div id="photo-modal" onclick="handlePhotoModalOverlay(event)">
+        <div id="photo-modal-card" onclick="event.stopPropagation()">
+          <button class="photo-modal-close" onclick="handlePhotoModalClose()">
+            <iconify-icon
+              icon="pixelarticons:x"
+              style="font-size: 20px"
+            ></iconify-icon>
           </button>
-          <button class="photo-modal-btn photo-modal-btn-secondary" onclick="showAvatarPicker()">
-            <iconify-icon icon="pixelarticons:user" style="font-size:16px;"></iconify-icon>
-            choose an avatar
-          </button>
+
+          <!-- View 1: main options -->
+          <div id="photo-main-view">
+            <div class="photo-modal-title">update your photo</div>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <button
+                class="photo-modal-btn photo-modal-btn-primary"
+                onclick="triggerFileInput()"
+              >
+                <iconify-icon
+                  icon="pixelarticons:upload"
+                  style="font-size: 16px"
+                ></iconify-icon>
+                upload a photo
+              </button>
+              <button
+                class="photo-modal-btn photo-modal-btn-secondary"
+                onclick="showAvatarPicker()"
+              >
+                <iconify-icon
+                  icon="pixelarticons:user"
+                  style="font-size: 16px"
+                ></iconify-icon>
+                choose an avatar
+              </button>
+            </div>
+          </div>
+
+          <!-- View 2: avatar picker -->
+          <div id="photo-avatar-view" style="display: none">
+            <button class="photo-modal-back" onclick="showPhotoMain()">
+              <iconify-icon
+                icon="pixelarticons:chevron-left"
+                style="font-size: 16px"
+              ></iconify-icon>
+              back
+            </button>
+            <div class="photo-modal-title">choose your avatar</div>
+            <div id="avatar-preview-wrap">
+              <div id="avatar-preview"></div>
+            </div>
+            <div class="picker-label">pick an emoji</div>
+            <div class="avatar-grid" id="avatar-grid"></div>
+            <div class="picker-label" style="margin-top: var(--sp-md)">
+              pick a color
+            </div>
+            <div class="avatar-bg-row" id="avatar-bg-row"></div>
+            <button
+              class="photo-modal-btn photo-modal-btn-primary"
+              style="margin-top: var(--sp-lg)"
+              onclick="confirmAvatar()"
+            >
+              confirm
+            </button>
+            <div id="avatar-confirm-prompt" style="display: none">
+              <div class="avatar-prompt-text">save your avatar?</div>
+              <div style="display: flex; gap: 8px; justify-content: center">
+                <button
+                  class="photo-modal-btn photo-modal-btn-primary"
+                  style="width: auto; padding: 8px 20px"
+                  onclick="confirmAvatar()"
+                >
+                  yes, save
+                </button>
+                <button
+                  class="photo-modal-btn photo-modal-btn-secondary"
+                  style="width: auto; padding: 8px 20px"
+                  onclick="forceHidePhotoModal()"
+                >
+                  close anyway
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <input
+        type="file"
+        id="file-input"
+        accept="image/*"
+        style="display: none"
+        onchange="handleFileUpload(this)"
+      />
 
-      <!-- View 2: avatar picker -->
-      <div id="photo-avatar-view" style="display:none;">
-        <button class="photo-modal-back" onclick="showPhotoMain()">
-          <iconify-icon icon="pixelarticons:chevron-left" style="font-size:16px;"></iconify-icon>
-          back
+      <!-- ════ GLOBAL NAV ════ -->
+      <div class="nav" id="global-nav">
+        <button
+          class="nav-btn active"
+          id="nav-home"
+          onclick="showScreen('home')"
+        >
+          <iconify-icon icon="pixelarticons:home"></iconify-icon>
         </button>
-        <div class="photo-modal-title">choose your avatar</div>
-        <div id="avatar-preview-wrap">
-          <div id="avatar-preview"></div>
-        </div>
-        <div class="picker-label">pick an emoji</div>
-        <div class="avatar-grid" id="avatar-grid"></div>
-        <div class="picker-label" style="margin-top:var(--sp-md);">pick a color</div>
-        <div class="avatar-bg-row" id="avatar-bg-row"></div>
-        <button class="photo-modal-btn photo-modal-btn-primary" style="margin-top:var(--sp-lg);" onclick="confirmAvatar()">confirm</button>
-        <div id="avatar-confirm-prompt" style="display:none;">
-          <div class="avatar-prompt-text">save your avatar?</div>
-          <div style="display:flex;gap:8px;justify-content:center;">
-            <button class="photo-modal-btn photo-modal-btn-primary" style="width:auto;padding:8px 20px;" onclick="confirmAvatar()">yes, save</button>
-            <button class="photo-modal-btn photo-modal-btn-secondary" style="width:auto;padding:8px 20px;" onclick="forceHidePhotoModal()">close anyway</button>
+        <button
+          class="nav-btn"
+          id="nav-calendar"
+          onclick="showScreen('calendar')"
+        >
+          <iconify-icon icon="pixelarticons:calendar"></iconify-icon>
+        </button>
+        <button
+          class="nav-btn"
+          id="nav-settings"
+          onclick="showScreen('settings')"
+        >
+          <iconify-icon icon="pixelarticons:avatar-circle"></iconify-icon>
+        </button>
+      </div>
+
+      <!-- ════ DELETE DIALOG ════ -->
+      <div id="delete-modal" onclick="handleDeleteModalOverlay(event)">
+        <div class="dialog-card" onclick="event.stopPropagation()">
+          <div
+            style="display: flex; justify-content: flex-end; margin-bottom: 4px"
+          >
+            <button
+              onclick="hideDeleteDialog()"
+              style="
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                color: var(--text-2);
+                display: flex;
+                align-items: center;
+              "
+            >
+              <iconify-icon
+                icon="pixelarticons:x"
+                style="font-size: 20px"
+              ></iconify-icon>
+            </button>
+          </div>
+          <p style="font-size: 17px; color: var(--text-1); margin-bottom: 20px">
+            delete this entry?
+          </p>
+          <div style="display: flex; gap: 10px">
+            <button
+              class="delete-modal-btn keep-btn"
+              onclick="hideDeleteDialog()"
+            >
+              keep it
+            </button>
+            <button
+              class="delete-modal-btn confirm-btn"
+              onclick="confirmDelete()"
+            >
+              delete
+            </button>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <input type="file" id="file-input" accept="image/*" style="display:none;" onchange="handleFileUpload(this)">
+    <script>
+      // ── CONSTANTS ────────────────────────────────────────
+      const COLORS = {
+        pink: "#FFD9F1",
+        yellow: "#FFF3C4",
+        blue: "#BCD2FF",
+        lavender: "#D6C3FF",
+      };
+      const DARK_COLORS = {
+        pink: "#6B2D4A",
+        yellow: "#5C4A1E",
+        blue: "#1E3A6B",
+        lavender: "#3D2466",
+      };
+      const LIGHT_SHADOW = {
+        pink: "#E8A8C8",
+        yellow: "#D8C880",
+        blue: "#8AAEE8",
+        lavender: "#A898D8",
+      };
+      const DARK_SHADOW = {
+        pink: "#4A1A30",
+        yellow: "#3A2C0A",
+        blue: "#0F2040",
+        lavender: "#251545",
+      };
 
-  <!-- ════ GLOBAL NAV ════ -->
-  <div class="nav" id="global-nav">
-    <button class="nav-btn active" id="nav-home"     onclick="showScreen('home')">    <iconify-icon icon="pixelarticons:home"></iconify-icon></button>
-    <button class="nav-btn"        id="nav-calendar" onclick="showScreen('calendar')"><iconify-icon icon="pixelarticons:calendar"></iconify-icon></button>
-    <button class="nav-btn"        id="nav-settings" onclick="showScreen('settings')"><iconify-icon icon="pixelarticons:avatar-circle"></iconify-icon></button>
-  </div>
+      const PROMPTS = [
+        "what made you smile today, even just a little?",
+        "describe your current mood as a type of weather",
+        "what's something you're looking forward to?",
+        "write about a small moment that meant something today",
+        "what would you tell your past self from a year ago?",
+        "something that's been on your mind lately...",
+        "what are you grateful for right now?",
+        "describe today in three words and explain each one",
+        "what's a challenge you faced today and how did you handle it?",
+        "if today was a color, what would it be and why?",
+        "what's something you want to remember about today?",
+        "write about someone who made your day better",
+        "what are you looking forward to tomorrow?",
+        "what's something you learned today?",
+        "describe your perfect version of today",
+      ];
 
-  <!-- ════ DELETE DIALOG ════ -->
-  <div id="delete-modal" onclick="handleDeleteModalOverlay(event)">
-    <div class="dialog-card" onclick="event.stopPropagation()">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:4px;">
-        <button onclick="hideDeleteDialog()" style="background:none;border:none;cursor:pointer;padding:0;color:var(--text-2);display:flex;align-items:center;">
-          <iconify-icon icon="pixelarticons:x" style="font-size:20px;"></iconify-icon>
-        </button>
-      </div>
-      <p style="font-size:17px;color:var(--text-1);margin-bottom:20px;">delete this entry?</p>
-      <div style="display:flex;gap:10px;">
-        <button class="delete-modal-btn keep-btn" onclick="hideDeleteDialog()">keep it</button>
-        <button class="delete-modal-btn confirm-btn" onclick="confirmDelete()">delete</button>
-      </div>
-    </div>
-  </div>
+      // ── DATA ─────────────────────────────────────────────
+      let entries = JSON.parse(localStorage.getItem("dj_entries") || "null");
+      let userName = localStorage.getItem("dj_name") || "";
+      let defColor = localStorage.getItem("dj_def_color") || "pink";
+      let darkMode = localStorage.getItem("dj_dark") === "1";
+      let fontSz = localStorage.getItem("dj_font_sz") || "medium";
+      let activePromptIdx = null;
 
+      if (!entries) {
+        const now = new Date();
+        const ago = (n) => {
+          const d = new Date(now);
+          d.setDate(d.getDate() - n);
+          return fmt(d);
+        };
+        entries = [
+          {
+            id: 1,
+            title: "A Strange Dream",
+            text: "I found myself standing at the edge of a glowing forest, fireflies floating all around me like tiny lanterns. The trees whispered secrets I couldn't quite understand.",
+            color: "lavender",
+            date: ago(5),
+            time: "8:30 AM",
+            weather: "ph:cloud-sun",
+          },
+          {
+            id: 2,
+            title: "Rainy Morning",
+            text: "Woke up to the sound of rain pattering against the window. Made myself a warm cup of tea and spent the morning reading by the window. It felt so peaceful.",
+            color: "blue",
+            date: ago(3),
+            time: "10:15 AM",
+            weather: "ph:cloud-rain",
+          },
+          {
+            id: 3,
+            title: "Golden Hour Walk",
+            text: "Took a long walk as the sun was setting. Everything turned golden and soft. I felt like I was inside a painting. I want to remember this feeling forever.",
+            color: "yellow",
+            date: ago(1),
+            time: "6:45 PM",
+            weather: "ph:cloud",
+          },
+          {
+            id: 4,
+            title: "My Thoughts",
+            text: "Today was one of those days where everything felt just right. Like the universe aligned perfectly. I can't explain it, but I'm so grateful for it.",
+            color: "pink",
+            date: ago(0),
+            time: "9:00 PM",
+            weather: "ph:sun",
+          },
+        ];
+        persist();
+      }
 
-</div>
-<script>
-// ── CONSTANTS ────────────────────────────────────────
-const COLORS        = { pink:'#FFD9F1', yellow:'#FFF3C4', blue:'#BCD2FF', lavender:'#D6C3FF' };
-const DARK_COLORS   = { pink:'#6B2D4A', yellow:'#5C4A1E', blue:'#1E3A6B', lavender:'#3D2466' };
-const LIGHT_SHADOW  = { pink:'#E8A8C8', yellow:'#D8C880', blue:'#8AAEE8', lavender:'#A898D8' };
-const DARK_SHADOW   = { pink:'#4A1A30', yellow:'#3A2C0A', blue:'#0F2040', lavender:'#251545' };
+      // ── UTILS ────────────────────────────────────────────
+      function fmt(d) {
+        return (
+          d.getFullYear() +
+          "-" +
+          String(d.getMonth() + 1).padStart(2, "0") +
+          "-" +
+          String(d.getDate()).padStart(2, "0")
+        );
+      }
+      function fmtTime(d) {
+        let h = d.getHours(),
+          m = String(d.getMinutes()).padStart(2, "0"),
+          ap = h >= 12 ? "PM" : "AM";
+        return (h % 12 || 12) + ":" + m + " " + ap;
+      }
+      function dispDate(s) {
+        const [, mo, d] = s.split("-").map(Number);
+        const mn = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        return mn[mo - 1] + " " + d + ([, "st", "nd", "rd"][d] || "th");
+      }
+      function esc(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+      function persist() {
+        localStorage.setItem("dj_entries", JSON.stringify(entries));
+        localStorage.setItem("dj_name", userName);
+        localStorage.setItem("dj_def_color", defColor);
+      }
 
-const PROMPTS = [
-  "what made you smile today, even just a little?",
-  "describe your current mood as a type of weather",
-  "what's something you're looking forward to?",
-  "write about a small moment that meant something today",
-  "what would you tell your past self from a year ago?",
-  "something that's been on your mind lately...",
-  "what are you grateful for right now?",
-  "describe today in three words and explain each one",
-  "what's a challenge you faced today and how did you handle it?",
-  "if today was a color, what would it be and why?",
-  "what's something you want to remember about today?",
-  "write about someone who made your day better",
-  "what are you looking forward to tomorrow?",
-  "what's something you learned today?",
-  "describe your perfect version of today"
-];
+      // ── DARK MODE ─────────────────────────────────────────
+      function applyDark() {
+        document.body.classList.toggle("dark", darkMode);
+      }
+      function toggleDark() {
+        darkMode = !darkMode;
+        applyDark();
+        document.getElementById("dark-toggle").classList.toggle("on", darkMode);
+        localStorage.setItem("dj_dark", darkMode ? "1" : "0");
+        showSettingsSaved();
+        // Re-render cards with new color scheme
+        const homeEl = document.getElementById("home-entries");
+        if (
+          homeEl &&
+          !document.getElementById("screen-home").classList.contains("hidden")
+        ) {
+          const sorted = [...entries].sort((a, b) =>
+            (b.date + b.time).localeCompare(a.date + a.time),
+          );
+          if (sorted.length > 0) renderCards(homeEl, sorted, false);
+        }
+        if (
+          !document.getElementById("screen-entry").classList.contains("hidden")
+        ) {
+          applyColor(curColor);
+        }
+      }
 
-// ── DATA ─────────────────────────────────────────────
-let entries  = JSON.parse(localStorage.getItem('dj_entries') || 'null');
-let userName = localStorage.getItem('dj_name') || '';
-let defColor = localStorage.getItem('dj_def_color') || 'pink';
-let darkMode = localStorage.getItem('dj_dark') === '1';
-let fontSz   = localStorage.getItem('dj_font_sz') || 'medium';
-let activePromptIdx = null;
+      // ── FONT SIZE ─────────────────────────────────────────
+      function applyFontSz() {
+        document.body.classList.remove(
+          "font-small",
+          "font-medium",
+          "font-large",
+        );
+        document.body.classList.add("font-" + fontSz);
+      }
+      function setFontSz(sz) {
+        fontSz = sz;
+        applyFontSz();
+        localStorage.setItem("dj_font_sz", sz);
+        document
+          .querySelectorAll(".size-btn")
+          .forEach((b) =>
+            b.classList.toggle("selected", b.dataset.size === sz),
+          );
+        showSettingsSaved();
+      }
 
-if (!entries) {
-  const now = new Date();
-  const ago = n => { const d = new Date(now); d.setDate(d.getDate()-n); return fmt(d); };
-  entries = [
-    { id:1, title:'A Strange Dream',  text:"I found myself standing at the edge of a glowing forest, fireflies floating all around me like tiny lanterns. The trees whispered secrets I couldn't quite understand.",      color:'lavender', date:ago(5), time:'8:30 AM',  weather:'ph:cloud-sun'  },
-    { id:2, title:'Rainy Morning',     text:"Woke up to the sound of rain pattering against the window. Made myself a warm cup of tea and spent the morning reading by the window. It felt so peaceful.",                 color:'blue',     date:ago(3), time:'10:15 AM', weather:'ph:cloud-rain' },
-    { id:3, title:'Golden Hour Walk',  text:"Took a long walk as the sun was setting. Everything turned golden and soft. I felt like I was inside a painting. I want to remember this feeling forever.",                  color:'yellow',   date:ago(1), time:'6:45 PM',  weather:'ph:cloud'      },
-    { id:4, title:'My Thoughts',       text:"Today was one of those days where everything felt just right. Like the universe aligned perfectly. I can't explain it, but I'm so grateful for it.",                         color:'pink',     date:ago(0), time:'9:00 PM',  weather:'ph:sun'        },
-  ];
-  persist();
-}
+      // ── PROMPTS ───────────────────────────────────────────
+      function getDailyPrompt() {
+        const today = fmt(new Date());
+        const storedDay = localStorage.getItem("dj_prompt_day");
+        let idx = parseInt(localStorage.getItem("dj_prompt_idx") || "-1");
+        if (storedDay !== today || idx < 0 || idx >= PROMPTS.length) {
+          idx = Math.floor(Math.random() * PROMPTS.length);
+          localStorage.setItem("dj_prompt_day", today);
+          localStorage.setItem("dj_prompt_idx", String(idx));
+        }
+        activePromptIdx = idx;
+        return PROMPTS[idx];
+      }
+      function refreshPrompt() {
+        let idx;
+        do {
+          idx = Math.floor(Math.random() * PROMPTS.length);
+        } while (idx === activePromptIdx && PROMPTS.length > 1);
+        activePromptIdx = idx;
+        localStorage.setItem("dj_prompt_idx", String(idx));
+        const el = document.getElementById("prompt-text");
+        if (el) el.textContent = PROMPTS[idx];
+      }
 
-// ── UTILS ────────────────────────────────────────────
-function fmt(d) {
-  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-}
-function fmtTime(d) {
-  let h=d.getHours(), m=String(d.getMinutes()).padStart(2,'0'), ap=h>=12?'PM':'AM';
-  return (h%12||12)+':'+m+' '+ap;
-}
-function dispDate(s) {
-  const [,mo,d]=s.split('-').map(Number);
-  const mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return mn[mo-1]+' '+d+([,'st','nd','rd'][d]||'th');
-}
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function persist() {
-  localStorage.setItem('dj_entries', JSON.stringify(entries));
-  localStorage.setItem('dj_name', userName);
-  localStorage.setItem('dj_def_color', defColor);
-}
+      // ── WEATHER ──────────────────────────────────────────
+      const WX = {
+        0: "ph:sun",
+        1: "ph:cloud-sun",
+        2: "ph:cloud-sun",
+        3: "ph:cloud-sun",
+        45: "ph:cloud-fog",
+        48: "ph:cloud-fog",
+        51: "ph:cloud-rain",
+        53: "ph:cloud-rain",
+        55: "ph:cloud-rain",
+        61: "ph:cloud-rain",
+        63: "ph:cloud-rain",
+        65: "ph:cloud-rain",
+        71: "ph:snowflake",
+        73: "ph:snowflake",
+        75: "ph:snowflake",
+        80: "ph:cloud-rain",
+        81: "ph:cloud-rain",
+        82: "ph:cloud-rain",
+        95: "ph:cloud-lightning",
+        96: "ph:cloud-lightning",
+        99: "ph:cloud-lightning",
+      };
+      function wxIcon(c) {
+        return WX[c] || "ph:cloud";
+      }
+      function toF(c) {
+        return Math.round((c * 9) / 5 + 32);
+      }
 
-// ── DARK MODE ─────────────────────────────────────────
-function applyDark() {
-  document.body.classList.toggle('dark', darkMode);
-}
-function toggleDark() {
-  darkMode = !darkMode;
-  applyDark();
-  document.getElementById('dark-toggle').classList.toggle('on', darkMode);
-  localStorage.setItem('dj_dark', darkMode ? '1' : '0');
-  showSettingsSaved();
-  // Re-render cards with new color scheme
-  const homeEl = document.getElementById('home-entries');
-  if (homeEl && !document.getElementById('screen-home').classList.contains('hidden')) {
-    const sorted = [...entries].sort((a,b) => (b.date+b.time).localeCompare(a.date+a.time));
-    if (sorted.length > 0) renderCards(homeEl, sorted, false);
-  }
-  if (!document.getElementById('screen-entry').classList.contains('hidden')) {
-    applyColor(curColor);
-  }
-}
+      function setEntryWeather(icon, tempF) {
+        const el = document.getElementById("entry-weather");
+        el.setAttribute("icon", icon);
+        el.style.color = icon === "ph:sun" ? "#F0A500" : "";
+        document.getElementById("entry-temp").textContent =
+          tempF != null ? tempF + "°F " : "";
+      }
 
-// ── FONT SIZE ─────────────────────────────────────────
-function applyFontSz() {
-  document.body.classList.remove('font-small', 'font-medium', 'font-large');
-  document.body.classList.add('font-' + fontSz);
-}
-function setFontSz(sz) {
-  fontSz = sz;
-  applyFontSz();
-  localStorage.setItem('dj_font_sz', sz);
-  document.querySelectorAll('.size-btn').forEach(b => b.classList.toggle('selected', b.dataset.size === sz));
-  showSettingsSaved();
-}
+      async function fetchCurrentWeather() {
+        const doFetch = async (lat, lon) => {
+          try {
+            const r = await fetch(
+              `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`,
+            );
+            const d = await r.json();
+            return {
+              icon: wxIcon(d.current_weather.weathercode),
+              code: d.current_weather.weathercode,
+              tempF: toF(d.current_weather.temperature),
+              lat,
+              lon,
+            };
+          } catch {
+            return null;
+          }
+        };
+        const lat = localStorage.getItem("dj_lat"),
+          lon = localStorage.getItem("dj_lon");
+        if (lat && lon) return doFetch(lat, lon);
+        return new Promise((resolve) => {
+          if (!navigator.geolocation) {
+            resolve(null);
+            return;
+          }
+          navigator.geolocation.getCurrentPosition(
+            async (pos) => {
+              const la = pos.coords.latitude.toFixed(4),
+                lo = pos.coords.longitude.toFixed(4);
+              localStorage.setItem("dj_lat", la);
+              localStorage.setItem("dj_lon", lo);
+              resolve(await doFetch(la, lo));
+            },
+            () => resolve(null),
+            { timeout: 8000, maximumAge: 600000 },
+          );
+        });
+      }
 
-// ── PROMPTS ───────────────────────────────────────────
-function getDailyPrompt() {
-  const today = fmt(new Date());
-  const storedDay = localStorage.getItem('dj_prompt_day');
-  let idx = parseInt(localStorage.getItem('dj_prompt_idx') || '-1');
-  if (storedDay !== today || idx < 0 || idx >= PROMPTS.length) {
-    idx = Math.floor(Math.random() * PROMPTS.length);
-    localStorage.setItem('dj_prompt_day', today);
-    localStorage.setItem('dj_prompt_idx', String(idx));
-  }
-  activePromptIdx = idx;
-  return PROMPTS[idx];
-}
-function refreshPrompt() {
-  let idx;
-  do { idx = Math.floor(Math.random() * PROMPTS.length); } while (idx === activePromptIdx && PROMPTS.length > 1);
-  activePromptIdx = idx;
-  localStorage.setItem('dj_prompt_idx', String(idx));
-  const el = document.getElementById('prompt-text');
-  if (el) el.textContent = PROMPTS[idx];
-}
+      async function fetchHistoricalWeather(date, lat, lon) {
+        try {
+          const r = await fetch(
+            `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${date}&end_date=${date}&daily=weathercode,temperature_2m_max`,
+          );
+          const d = await r.json();
+          return {
+            icon: wxIcon(d.daily.weathercode[0]),
+            code: d.daily.weathercode[0],
+            tempF: toF(d.daily.temperature_2m_max[0]),
+          };
+        } catch {
+          return null;
+        }
+      }
 
-// ── WEATHER ──────────────────────────────────────────
-const WX={0:'ph:sun',1:'ph:cloud-sun',2:'ph:cloud-sun',3:'ph:cloud-sun',45:'ph:cloud-fog',48:'ph:cloud-fog',51:'ph:cloud-rain',53:'ph:cloud-rain',55:'ph:cloud-rain',61:'ph:cloud-rain',63:'ph:cloud-rain',65:'ph:cloud-rain',71:'ph:snowflake',73:'ph:snowflake',75:'ph:snowflake',80:'ph:cloud-rain',81:'ph:cloud-rain',82:'ph:cloud-rain',95:'ph:cloud-lightning',96:'ph:cloud-lightning',99:'ph:cloud-lightning'};
-function wxIcon(c){ return WX[c]||'ph:cloud'; }
-function toF(c){ return Math.round(c*9/5+32); }
-
-function setEntryWeather(icon, tempF){
-  const el=document.getElementById('entry-weather');
-  el.setAttribute('icon', icon);
-  el.style.color = icon==='ph:sun' ? '#F0A500' : '';
-  document.getElementById('entry-temp').textContent = tempF!=null ? tempF+'°F ' : '';
-}
-
-async function fetchCurrentWeather(){
-  const doFetch=async(lat,lon)=>{
-    try{
-      const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
-      const d=await r.json();
-      return{icon:wxIcon(d.current_weather.weathercode),code:d.current_weather.weathercode,tempF:toF(d.current_weather.temperature),lat,lon};
-    }catch{return null;}
-  };
-  const lat=localStorage.getItem('dj_lat'), lon=localStorage.getItem('dj_lon');
-  if(lat&&lon) return doFetch(lat,lon);
-  return new Promise(resolve=>{
-    if(!navigator.geolocation){resolve(null);return;}
-    navigator.geolocation.getCurrentPosition(async pos=>{
-      const la=pos.coords.latitude.toFixed(4), lo=pos.coords.longitude.toFixed(4);
-      localStorage.setItem('dj_lat',la); localStorage.setItem('dj_lon',lo);
-      resolve(await doFetch(la,lo));
-    },()=>resolve(null),{timeout:8000,maximumAge:600000});
-  });
-}
-
-async function fetchHistoricalWeather(date,lat,lon){
-  try{
-    const r=await fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${date}&end_date=${date}&daily=weathercode,temperature_2m_max`);
-    const d=await r.json();
-    return{icon:wxIcon(d.daily.weathercode[0]),code:d.daily.weathercode[0],tempF:toF(d.daily.temperature_2m_max[0])};
-  }catch{return null;}
-}
-
-// ── RENDER CARDS ─────────────────────────────────────
-function renderCards(container, list, stagger=false, staggerClass='card-stagger') {
-  if (!list.length) {
-    container.innerHTML = '<p style="color:var(--text-2);font-size:13px;padding:12px 0;">No entries found.</p>';
-    return;
-  }
-  const palette = darkMode ? DARK_COLORS : COLORS;
-  const shadows = darkMode ? DARK_SHADOW : LIGHT_SHADOW;
-  container.innerHTML = list.map((e,i) => {
-    const bg  = palette[e.color] || COLORS[e.color];
-    const shd = `box-shadow:3px 3px 0px ${shadows[e.color]};--card-shadow-color:${shadows[e.color]};`;
-    return `
-    <div class="card${stagger?' '+staggerClass:''}" style="background:${bg};${shd}${stagger?`animation-delay:${i*80}ms`:''}" onclick="openEntry(${e.id})">
+      // ── RENDER CARDS ─────────────────────────────────────
+      function renderCards(
+        container,
+        list,
+        stagger = false,
+        staggerClass = "card-stagger",
+      ) {
+        if (!list.length) {
+          container.innerHTML =
+            '<p style="color:var(--text-2);font-size:13px;padding:12px 0;">No entries found.</p>';
+          return;
+        }
+        const palette = darkMode ? DARK_COLORS : COLORS;
+        const shadows = darkMode ? DARK_SHADOW : LIGHT_SHADOW;
+        container.innerHTML = list
+          .map((e, i) => {
+            const bg = palette[e.color] || COLORS[e.color];
+            const shd = `box-shadow:3px 3px 0px ${shadows[e.color]};--card-shadow-color:${shadows[e.color]};`;
+            return `
+    <div class="card${stagger ? " " + staggerClass : ""}" style="background:${bg};${shd}${stagger ? `animation-delay:${i * 80}ms` : ""}" onclick="openEntry(${e.id})">
       <div class="card-header">
         <div class="card-header-left">
           <iconify-icon icon="${esc(e.weather)}" style="font-size:15px;"></iconify-icon>
-          ${e.tempF!=null?`<span>${e.tempF}°F</span>`:''}
+          ${e.tempF != null ? `<span>${e.tempF}°F</span>` : ""}
           <span>${dispDate(e.date)}</span>
         </div>
         <span>${esc(e.time)}</span>
@@ -909,35 +2272,62 @@ function renderCards(container, list, stagger=false, staggerClass='card-stagger'
       <div class="card-title">${esc(e.title)}</div>
       <div class="card-text">${esc(e.text)}</div>
     </div>`;
-  }).join('');
-  if (stagger) {
-    container.querySelectorAll('.' + staggerClass).forEach(card => {
-      card.addEventListener('animationend', () => card.classList.remove(staggerClass), { once: true });
-    });
-  }
-}
+          })
+          .join("");
+        if (stagger) {
+          container.querySelectorAll("." + staggerClass).forEach((card) => {
+            card.addEventListener(
+              "animationend",
+              () => card.classList.remove(staggerClass),
+              { once: true },
+            );
+          });
+        }
+      }
 
-// ── HOME ─────────────────────────────────────────────
-let todayWeather = null;
+      // ── HOME ─────────────────────────────────────────────
+      let todayWeather = null;
 
-function initHome() {
-  const now=new Date(), d=now.getDate();
-  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const mons=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  document.getElementById('home-date').textContent = days[now.getDay()]+', '+mons[now.getMonth()]+' '+d+([,'st','nd','rd'][d]||'th');
-  document.getElementById('home-subtitle').textContent = userName
-    ? 'How are you feeling today, '+userName+'?'
-    : 'How are you feeling today?';
+      function initHome() {
+        const now = new Date(),
+          d = now.getDate();
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const mons = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        document.getElementById("home-date").textContent =
+          days[now.getDay()] +
+          ", " +
+          mons[now.getMonth()] +
+          " " +
+          d +
+          ([, "st", "nd", "rd"][d] || "th");
+        document.getElementById("home-subtitle").textContent = userName
+          ? "How are you feeling today, " + userName + "?"
+          : "How are you feeling today?";
 
-  const sorted   = [...entries].sort((a,b) => (b.date+b.time).localeCompare(a.date+a.time));
-  const entriesEl = document.getElementById('home-entries');
-  const promptEl  = document.getElementById('home-prompt');
-  const labelEl   = document.getElementById('entries-label');
+        const sorted = [...entries].sort((a, b) =>
+          (b.date + b.time).localeCompare(a.date + a.time),
+        );
+        const entriesEl = document.getElementById("home-entries");
+        const promptEl = document.getElementById("home-prompt");
+        const labelEl = document.getElementById("entries-label");
 
-  if (sorted.length === 0) {
-    promptEl.style.display = 'none';
-    labelEl.style.display  = 'none';
-    entriesEl.innerHTML = `
+        if (sorted.length === 0) {
+          promptEl.style.display = "none";
+          labelEl.style.display = "none";
+          entriesEl.innerHTML = `
       <div class="empty-state">
         <div class="journal-illus">
           <div class="journal-left"></div>
@@ -951,11 +2341,11 @@ function initHome() {
           write something
         </button>
       </div>`;
-  } else {
-    labelEl.style.display  = '';
-    promptEl.style.display = '';
-    const prompt = getDailyPrompt();
-    promptEl.innerHTML = `
+        } else {
+          labelEl.style.display = "";
+          promptEl.style.display = "";
+          const prompt = getDailyPrompt();
+          promptEl.innerHTML = `
       <div class="prompt-card" onclick="openNewEntryWithPrompt()">
         <div class="prompt-label">
           today's prompt ✨
@@ -965,444 +2355,661 @@ function initHome() {
         </div>
         <div class="prompt-text" id="prompt-text">${esc(prompt)}</div>
       </div>`;
-    renderCards(entriesEl, sorted, true);
-  }
+          renderCards(entriesEl, sorted, true);
+        }
 
-  renderProfilePic();
-  updateHomeWeather();
-}
+        renderProfilePic();
+        updateHomeWeather();
+      }
 
-async function updateHomeWeather() {
-  if (!todayWeather) { const wx = await fetchCurrentWeather(); if(wx) todayWeather=wx; }
-  if (todayWeather) {
-    const el = document.getElementById('home-weather-icon');
-    el.setAttribute('icon', todayWeather.icon);
-    el.style.color = '';
-  }
-}
+      async function updateHomeWeather() {
+        if (!todayWeather) {
+          const wx = await fetchCurrentWeather();
+          if (wx) todayWeather = wx;
+        }
+        if (todayWeather) {
+          const el = document.getElementById("home-weather-icon");
+          el.setAttribute("icon", todayWeather.icon);
+          el.style.color = "";
+        }
+      }
 
-// ── ENTRY ────────────────────────────────────────────
-let curId=null, curColor=defColor, prevScreen='home', curWeather={icon:'ph:sun',code:null,tempF:null,lat:null,lon:null};
-let pendingPrompt = null;
+      // ── ENTRY ────────────────────────────────────────────
+      let curId = null,
+        curColor = defColor,
+        prevScreen = "home",
+        curWeather = {
+          icon: "ph:sun",
+          code: null,
+          tempF: null,
+          lat: null,
+          lon: null,
+        };
+      let pendingPrompt = null;
 
-function openNewEntryWithPrompt() {
-  pendingPrompt = PROMPTS[activePromptIdx] || null;
-  openNewEntry();
-}
+      function openNewEntryWithPrompt() {
+        pendingPrompt = PROMPTS[activePromptIdx] || null;
+        openNewEntry();
+      }
 
-function insertPrompt() {
-  const body = document.getElementById('entry-body');
-  const prompt = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
-  if (body.value.trim()) {
-    if (!confirm('replace your current text?')) return;
-  }
-  body.value = prompt;
-  body.focus();
-}
+      function insertPrompt() {
+        const body = document.getElementById("entry-body");
+        const prompt = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
+        if (body.value.trim()) {
+          if (!confirm("replace your current text?")) return;
+        }
+        body.value = prompt;
+        body.focus();
+      }
 
-function showDeleteDialog(){ document.getElementById('delete-modal').classList.add('open'); }
-function hideDeleteDialog(){
-  const m=document.getElementById('delete-modal');
-  m.classList.add('closing');
-  setTimeout(()=>{ m.classList.remove('open','closing'); }, 150);
-}
-function handleDeleteModalOverlay(e){
-  if(e.target===document.getElementById('delete-modal')) hideDeleteDialog();
-}
+      function showDeleteDialog() {
+        document.getElementById("delete-modal").classList.add("open");
+      }
+      function hideDeleteDialog() {
+        const m = document.getElementById("delete-modal");
+        m.classList.add("closing");
+        setTimeout(() => {
+          m.classList.remove("open", "closing");
+        }, 150);
+      }
+      function handleDeleteModalOverlay(e) {
+        if (e.target === document.getElementById("delete-modal"))
+          hideDeleteDialog();
+      }
 
-function confirmDelete(){
-  hideDeleteDialog();
-  if(curId){ entries=entries.filter(x=>x.id!==curId); persist(); curId=null; }
-  showScreen('home');
-}
+      function confirmDelete() {
+        hideDeleteDialog();
+        if (curId) {
+          entries = entries.filter((x) => x.id !== curId);
+          persist();
+          curId = null;
+        }
+        showScreen("home");
+      }
 
-async function openNewEntry() {
-  curId=null; curColor=defColor;
-  document.getElementById('delete-btn').style.display='none';
-  curWeather={icon:'ph:sun',code:null,tempF:null,lat:null,lon:null};
-  const now=new Date();
-  document.getElementById('entry-title').value='';
-  document.getElementById('entry-body').value = pendingPrompt || '';
-  pendingPrompt = null;
-  document.getElementById('entry-date').textContent=dispDate(fmt(now));
-  document.getElementById('entry-time').textContent=fmtTime(now);
-  setEntryWeather('ph:sun',null);
-  applyColor(defColor);
-  showScreen('entry');
-  const wx=await fetchCurrentWeather();
-  if(wx && curId===null && !document.getElementById('screen-entry').classList.contains('hidden')){
-    curWeather=wx;
-    setEntryWeather(wx.icon,wx.tempF);
-  }
-}
+      async function openNewEntry() {
+        curId = null;
+        curColor = defColor;
+        document.getElementById("delete-btn").style.display = "none";
+        curWeather = {
+          icon: "ph:sun",
+          code: null,
+          tempF: null,
+          lat: null,
+          lon: null,
+        };
+        const now = new Date();
+        document.getElementById("entry-title").value = "";
+        document.getElementById("entry-body").value = pendingPrompt || "";
+        pendingPrompt = null;
+        document.getElementById("entry-date").textContent = dispDate(fmt(now));
+        document.getElementById("entry-time").textContent = fmtTime(now);
+        setEntryWeather("ph:sun", null);
+        applyColor(defColor);
+        showScreen("entry");
+        const wx = await fetchCurrentWeather();
+        if (
+          wx &&
+          curId === null &&
+          !document.getElementById("screen-entry").classList.contains("hidden")
+        ) {
+          curWeather = wx;
+          setEntryWeather(wx.icon, wx.tempF);
+        }
+      }
 
-async function openEntry(id) {
-  const e=entries.find(x=>x.id===id); if(!e) return;
-  curId=id; curColor=e.color;
-  document.getElementById('delete-btn').style.display='';
-  curWeather={icon:e.weather,code:e.weatherCode??null,tempF:e.tempF??null,lat:e.lat??null,lon:e.lon??null};
-  document.getElementById('entry-title').value=e.title;
-  document.getElementById('entry-body').value=e.text;
-  document.getElementById('entry-date').textContent=dispDate(e.date);
-  document.getElementById('entry-time').textContent=e.time;
-  setEntryWeather(e.weather, e.tempF??null);
-  applyColor(e.color);
-  showScreen('entry');
-  const lat=e.lat||localStorage.getItem('dj_lat'), lon=e.lon||localStorage.getItem('dj_lon');
-  if(lat&&lon){
-    const wx=await fetchHistoricalWeather(e.date,lat,lon);
-    if(wx && curId===id && !document.getElementById('screen-entry').classList.contains('hidden')){
-      curWeather={...curWeather,...wx};
-      setEntryWeather(wx.icon,wx.tempF);
-      e.weather=wx.icon; e.weatherCode=wx.code; e.tempF=wx.tempF;
-      persist();
-    }
-  }
-}
+      async function openEntry(id) {
+        const e = entries.find((x) => x.id === id);
+        if (!e) return;
+        curId = id;
+        curColor = e.color;
+        document.getElementById("delete-btn").style.display = "";
+        curWeather = {
+          icon: e.weather,
+          code: e.weatherCode ?? null,
+          tempF: e.tempF ?? null,
+          lat: e.lat ?? null,
+          lon: e.lon ?? null,
+        };
+        document.getElementById("entry-title").value = e.title;
+        document.getElementById("entry-body").value = e.text;
+        document.getElementById("entry-date").textContent = dispDate(e.date);
+        document.getElementById("entry-time").textContent = e.time;
+        setEntryWeather(e.weather, e.tempF ?? null);
+        applyColor(e.color);
+        showScreen("entry");
+        const lat = e.lat || localStorage.getItem("dj_lat"),
+          lon = e.lon || localStorage.getItem("dj_lon");
+        if (lat && lon) {
+          const wx = await fetchHistoricalWeather(e.date, lat, lon);
+          if (
+            wx &&
+            curId === id &&
+            !document
+              .getElementById("screen-entry")
+              .classList.contains("hidden")
+          ) {
+            curWeather = { ...curWeather, ...wx };
+            setEntryWeather(wx.icon, wx.tempF);
+            e.weather = wx.icon;
+            e.weatherCode = wx.code;
+            e.tempF = wx.tempF;
+            persist();
+          }
+        }
+      }
 
-function applyColor(color) {
-  curColor=color;
-  const palette = darkMode ? DARK_COLORS : COLORS;
-  document.getElementById('screen-entry').style.background = palette[color] || COLORS[color];
-  document.querySelectorAll('.swatches .swatch').forEach(s=>s.classList.toggle('selected',s.dataset.color===color));
-}
+      function applyColor(color) {
+        curColor = color;
+        const palette = darkMode ? DARK_COLORS : COLORS;
+        document.getElementById("screen-entry").style.background =
+          palette[color] || COLORS[color];
+        document
+          .querySelectorAll(".swatches .swatch")
+          .forEach((s) =>
+            s.classList.toggle("selected", s.dataset.color === color),
+          );
+      }
 
-function setColor(el, color) { applyColor(color); }
+      function setColor(el, color) {
+        applyColor(color);
+      }
 
-function saveEntry() {
-  const title=document.getElementById('entry-title').value.trim();
-  const text=document.getElementById('entry-body').value.trim();
-  if (title||text) {
-    if (curId) {
-      const e=entries.find(x=>x.id===curId);
-      if(e){ e.title=title||'Untitled'; e.text=text; e.color=curColor; e.weather=curWeather.icon||e.weather; if(curWeather.tempF!=null)e.tempF=curWeather.tempF; if(curWeather.code!=null)e.weatherCode=curWeather.code; }
-    } else {
-      const now=new Date();
-      entries.push({id:Date.now(),title:title||'Untitled',text,color:curColor,date:fmt(now),time:fmtTime(now),weather:curWeather.icon||'ph:sun',weatherCode:curWeather.code,tempF:curWeather.tempF,lat:curWeather.lat,lon:curWeather.lon});
-    }
-    persist();
-  }
-  showScreen(prevScreen);
-}
+      function saveEntry() {
+        const title = document.getElementById("entry-title").value.trim();
+        const text = document.getElementById("entry-body").value.trim();
+        if (title || text) {
+          if (curId) {
+            const e = entries.find((x) => x.id === curId);
+            if (e) {
+              e.title = title || "Untitled";
+              e.text = text;
+              e.color = curColor;
+              e.weather = curWeather.icon || e.weather;
+              if (curWeather.tempF != null) e.tempF = curWeather.tempF;
+              if (curWeather.code != null) e.weatherCode = curWeather.code;
+            }
+          } else {
+            const now = new Date();
+            entries.push({
+              id: Date.now(),
+              title: title || "Untitled",
+              text,
+              color: curColor,
+              date: fmt(now),
+              time: fmtTime(now),
+              weather: curWeather.icon || "ph:sun",
+              weatherCode: curWeather.code,
+              tempF: curWeather.tempF,
+              lat: curWeather.lat,
+              lon: curWeather.lon,
+            });
+          }
+          persist();
+        }
+        showScreen(prevScreen);
+      }
 
-// ── CALENDAR ─────────────────────────────────────────
-let calY=new Date().getFullYear(), calM=new Date().getMonth(), selDate=fmt(new Date());
+      // ── CALENDAR ─────────────────────────────────────────
+      let calY = new Date().getFullYear(),
+        calM = new Date().getMonth(),
+        selDate = fmt(new Date());
 
-function renderCalendar() {
-  const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  document.getElementById('cal-label').textContent=MN[calM]+' '+calY;
-  const map={};
-  entries.forEach(e=>{ if(!map[e.date]) map[e.date]=[]; map[e.date].push(e); });
-  const first=new Date(calY,calM,1).getDay();
-  const days=new Date(calY,calM+1,0).getDate();
-  const today=fmt(new Date());
-  let html=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="cal-th">${d}</div>`).join('');
-  for(let i=0;i<first;i++) html+='<div></div>';
-  for(let d=1;d<=days;d++){
-    const ds=calY+'-'+String(calM+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    const sel=ds===selDate, tod=ds===today;
-    const dot=map[ds]?.[0]?`<div class="cal-dot" style="background:${COLORS[map[ds][0].color]};"></div>`:'';
-    html+=`<div class="cal-day${sel?' selected':''}" onclick="pickDate('${ds}')">
-      <div class="cal-day-num" style="${tod&&!sel?'font-weight:700;':''}">${d}</div>${dot}</div>`;
-  }
-  document.getElementById('cal-grid').innerHTML=html;
-  renderCards(document.getElementById('cal-entries'), entries.filter(e=>e.date===selDate), true, 'card-stagger-cal');
-}
+      function renderCalendar() {
+        const MN = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        document.getElementById("cal-label").textContent =
+          MN[calM] + " " + calY;
+        const map = {};
+        entries.forEach((e) => {
+          if (!map[e.date]) map[e.date] = [];
+          map[e.date].push(e);
+        });
+        const first = new Date(calY, calM, 1).getDay();
+        const days = new Date(calY, calM + 1, 0).getDate();
+        const today = fmt(new Date());
+        let html = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+          .map((d) => `<div class="cal-th">${d}</div>`)
+          .join("");
+        for (let i = 0; i < first; i++) html += "<div></div>";
+        for (let d = 1; d <= days; d++) {
+          const ds =
+            calY +
+            "-" +
+            String(calM + 1).padStart(2, "0") +
+            "-" +
+            String(d).padStart(2, "0");
+          const sel = ds === selDate,
+            tod = ds === today;
+          const dot = map[ds]?.[0]
+            ? `<div class="cal-dot" style="background:${COLORS[map[ds][0].color]};"></div>`
+            : "";
+          html += `<div class="cal-day${sel ? " selected" : ""}" onclick="pickDate('${ds}')">
+      <div class="cal-day-num" style="${tod && !sel ? "font-weight:700;" : ""}">${d}</div>${dot}</div>`;
+        }
+        document.getElementById("cal-grid").innerHTML = html;
+        renderCards(
+          document.getElementById("cal-entries"),
+          entries.filter((e) => e.date === selDate),
+          true,
+          "card-stagger-cal",
+        );
+      }
 
-function pickDate(ds){ selDate=ds; renderCalendar(); }
+      function pickDate(ds) {
+        selDate = ds;
+        renderCalendar();
+      }
 
-function changeMonth(n) {
-  const grid=document.getElementById('cal-grid'), label=document.getElementById('cal-label');
-  const out=n>0?'translateX(-18px)':'translateX(18px)', inn=n>0?'translateX(18px)':'translateX(-18px)';
-  [grid,label].forEach(el=>{ el.style.transition='opacity 0.14s ease,transform 0.14s ease'; el.style.opacity='0'; el.style.transform=out; });
-  setTimeout(()=>{
-    calM+=n; if(calM>11){calM=0;calY++;} if(calM<0){calM=11;calY--;}
-    renderCalendar();
-    [grid,label].forEach(el=>{ el.style.transition='none'; el.style.transform=inn; el.style.opacity='0'; });
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      [grid,label].forEach(el=>{ el.style.transition='opacity 0.18s ease,transform 0.18s ease'; el.style.opacity='1'; el.style.transform='translateX(0)'; });
-    }));
-  }, 140);
-}
+      function changeMonth(n) {
+        const grid = document.getElementById("cal-grid"),
+          label = document.getElementById("cal-label");
+        const out = n > 0 ? "translateX(-18px)" : "translateX(18px)",
+          inn = n > 0 ? "translateX(18px)" : "translateX(-18px)";
+        [grid, label].forEach((el) => {
+          el.style.transition = "opacity 0.14s ease,transform 0.14s ease";
+          el.style.opacity = "0";
+          el.style.transform = out;
+        });
+        setTimeout(() => {
+          calM += n;
+          if (calM > 11) {
+            calM = 0;
+            calY++;
+          }
+          if (calM < 0) {
+            calM = 11;
+            calY--;
+          }
+          renderCalendar();
+          [grid, label].forEach((el) => {
+            el.style.transition = "none";
+            el.style.transform = inn;
+            el.style.opacity = "0";
+          });
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => {
+              [grid, label].forEach((el) => {
+                el.style.transition = "opacity 0.18s ease,transform 0.18s ease";
+                el.style.opacity = "1";
+                el.style.transform = "translateX(0)";
+              });
+            }),
+          );
+        }, 140);
+      }
 
-function handleSearch(q){
-  const cv=document.getElementById('cal-view'), sv=document.getElementById('search-view');
-  if(!q.trim()){ cv.style.display=''; sv.style.display='none'; return; }
-  cv.style.display='none'; sv.style.display='';
-  const r=entries.filter(e=>e.title.toLowerCase().includes(q.toLowerCase())||e.text.toLowerCase().includes(q.toLowerCase()));
-  document.getElementById('search-label').textContent=r.length+' result'+(r.length!==1?'s':'')+' for "'+q+'"';
-  renderCards(document.getElementById('search-entries'),r);
-}
+      function handleSearch(q) {
+        const cv = document.getElementById("cal-view"),
+          sv = document.getElementById("search-view");
+        if (!q.trim()) {
+          cv.style.display = "";
+          sv.style.display = "none";
+          return;
+        }
+        cv.style.display = "none";
+        sv.style.display = "";
+        const r = entries.filter(
+          (e) =>
+            e.title.toLowerCase().includes(q.toLowerCase()) ||
+            e.text.toLowerCase().includes(q.toLowerCase()),
+        );
+        document.getElementById("search-label").textContent =
+          r.length +
+          " result" +
+          (r.length !== 1 ? "s" : "") +
+          ' for "' +
+          q +
+          '"';
+        renderCards(document.getElementById("search-entries"), r);
+      }
 
-// ── SETTINGS ─────────────────────────────────────────
-let savedTimer = null;
+      // ── SETTINGS ─────────────────────────────────────────
+      let savedTimer = null;
 
-function showSettingsSaved() {
-  const el = document.getElementById('settings-saved');
-  if (!el) return;
-  el.classList.add('visible');
-  if (savedTimer) clearTimeout(savedTimer);
-  savedTimer = setTimeout(() => el.classList.remove('visible'), 1500);
-}
+      function showSettingsSaved() {
+        const el = document.getElementById("settings-saved");
+        if (!el) return;
+        el.classList.add("visible");
+        if (savedTimer) clearTimeout(savedTimer);
+        savedTimer = setTimeout(() => el.classList.remove("visible"), 1500);
+      }
 
-function initSettings(){
-  renderProfilePic();
-  const input = document.getElementById('settings-name-input');
-  input.value = userName;
-  document.getElementById('settings-name-disp').textContent = userName || 'Your Name';
-  document.querySelectorAll('#settings-swatches .swatch').forEach(s=>s.classList.toggle('selected',s.dataset.color===defColor));
-  document.querySelectorAll('.size-btn').forEach(b=>b.classList.toggle('selected', b.dataset.size===fontSz));
-  document.getElementById('dark-toggle').classList.toggle('on', darkMode);
-  input.oninput = () => {
-    userName = input.value.trim();
-    document.getElementById('settings-name-disp').textContent = input.value || 'Your Name';
-    persist();
-    showSettingsSaved();
-  };
-}
+      function initSettings() {
+        renderProfilePic();
+        const input = document.getElementById("settings-name-input");
+        input.value = userName;
+        document.getElementById("settings-name-disp").textContent =
+          userName || "Your Name";
+        document
+          .querySelectorAll("#settings-swatches .swatch")
+          .forEach((s) =>
+            s.classList.toggle("selected", s.dataset.color === defColor),
+          );
+        document
+          .querySelectorAll(".size-btn")
+          .forEach((b) =>
+            b.classList.toggle("selected", b.dataset.size === fontSz),
+          );
+        document.getElementById("dark-toggle").classList.toggle("on", darkMode);
+        input.oninput = () => {
+          userName = input.value.trim();
+          document.getElementById("settings-name-disp").textContent =
+            input.value || "Your Name";
+          persist();
+          showSettingsSaved();
+        };
+      }
 
-function setDefaultColor(el, color){
-  defColor = color;
-  document.querySelectorAll('#settings-swatches .swatch').forEach(s=>s.classList.remove('selected'));
-  el.classList.add('selected');
-  persist();
-  showSettingsSaved();
-}
+      function setDefaultColor(el, color) {
+        defColor = color;
+        document
+          .querySelectorAll("#settings-swatches .swatch")
+          .forEach((s) => s.classList.remove("selected"));
+        el.classList.add("selected");
+        persist();
+        showSettingsSaved();
+      }
 
-// ── PROFILE PICTURE ──────────────────────────────────
-const AVATARS       = ['🌸','🌙','⭐','🦋','🌈','🎀','🐚','🍓','🌿'];
-const AVATAR_COLORS = ['#FFD9F1','#BCD2FF','#D6C3FF','#FFF3C4','#C9F0D4','#FFE4C4'];
+      // ── PROFILE PICTURE ──────────────────────────────────
+      const AVATARS = ["🌸", "🌙", "⭐", "🦋", "🌈", "🎀", "🐚", "🍓", "🌿"];
+      const AVATAR_COLORS = [
+        "#FFD9F1",
+        "#BCD2FF",
+        "#D6C3FF",
+        "#FFF3C4",
+        "#C9F0D4",
+        "#FFE4C4",
+      ];
 
-let profilePhoto  = localStorage.getItem('profile-picture') || null;
-let profileAvatar = (() => { try { return JSON.parse(localStorage.getItem('profile-avatar')); } catch { return null; } })();
+      let profilePhoto = localStorage.getItem("profile-picture") || null;
+      let profileAvatar = (() => {
+        try {
+          return JSON.parse(localStorage.getItem("profile-avatar"));
+        } catch {
+          return null;
+        }
+      })();
 
-let selectedAvatar   = null;
-let selectedAvatarBg = null;
-let pickerInitialEmoji = null;
-let pickerInitialBg    = null;
+      let selectedAvatar = null;
+      let selectedAvatarBg = null;
+      let pickerInitialEmoji = null;
+      let pickerInitialBg = null;
 
-function renderProfilePic() {
-  const avatarEl = document.getElementById('avatar-display');
-  const homeBtn  = document.getElementById('home-avatar-btn');
-  if (!avatarEl || !homeBtn) return;
+      function renderProfilePic() {
+        const avatarEl = document.getElementById("avatar-display");
+        const homeBtn = document.getElementById("home-avatar-btn");
+        if (!avatarEl || !homeBtn) return;
 
-  if (profilePhoto) {
-    avatarEl.style.background = 'var(--neutral)';
-    avatarEl.innerHTML = `<img src="${profilePhoto}" alt="profile" style="width:100%;height:100%;object-fit:cover;">`;
-    homeBtn.style.background = 'var(--neutral)';
-    homeBtn.innerHTML = `<img src="${profilePhoto}" alt="profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
-  } else if (profileAvatar) {
-    avatarEl.style.background = profileAvatar.color;
-    avatarEl.innerHTML = `<span class="avatar-emoji">${profileAvatar.emoji}</span>`;
-    homeBtn.style.background = profileAvatar.color;
-    homeBtn.innerHTML = `<span class="home-avatar-emoji">${profileAvatar.emoji}</span>`;
-  } else {
-    avatarEl.style.background = 'var(--neutral)';
-    avatarEl.innerHTML = `<iconify-icon icon="pixelarticons:user" style="font-size:32px;color:var(--icon-inactive);"></iconify-icon>`;
-    homeBtn.style.background = 'var(--neutral)';
-    homeBtn.innerHTML = `<iconify-icon icon="pixelarticons:user" style="font-size:16px;color:var(--icon-inactive);"></iconify-icon>`;
-  }
-}
+        if (profilePhoto) {
+          avatarEl.style.background = "var(--neutral)";
+          avatarEl.innerHTML = `<img src="${profilePhoto}" alt="profile" style="width:100%;height:100%;object-fit:cover;">`;
+          homeBtn.style.background = "var(--neutral)";
+          homeBtn.innerHTML = `<img src="${profilePhoto}" alt="profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+        } else if (profileAvatar) {
+          avatarEl.style.background = profileAvatar.color;
+          avatarEl.innerHTML = `<span class="avatar-emoji">${profileAvatar.emoji}</span>`;
+          homeBtn.style.background = profileAvatar.color;
+          homeBtn.innerHTML = `<span class="home-avatar-emoji">${profileAvatar.emoji}</span>`;
+        } else {
+          avatarEl.style.background = "var(--neutral)";
+          avatarEl.innerHTML = `<iconify-icon icon="pixelarticons:user" style="font-size:32px;color:var(--icon-inactive);"></iconify-icon>`;
+          homeBtn.style.background = "var(--neutral)";
+          homeBtn.innerHTML = `<iconify-icon icon="pixelarticons:user" style="font-size:16px;color:var(--icon-inactive);"></iconify-icon>`;
+        }
+      }
 
-function showPhotoModal() {
-  showPhotoMain();
-  document.getElementById('photo-modal').classList.add('open');
-}
+      function showPhotoModal() {
+        showPhotoMain();
+        document.getElementById("photo-modal").classList.add("open");
+      }
 
-function showPhotoMain() {
-  document.getElementById('photo-main-view').style.display = '';
-  document.getElementById('photo-avatar-view').style.display = 'none';
-  document.getElementById('avatar-confirm-prompt').style.display = 'none';
-  selectedAvatar = null; selectedAvatarBg = null;
-}
+      function showPhotoMain() {
+        document.getElementById("photo-main-view").style.display = "";
+        document.getElementById("photo-avatar-view").style.display = "none";
+        document.getElementById("avatar-confirm-prompt").style.display = "none";
+        selectedAvatar = null;
+        selectedAvatarBg = null;
+      }
 
-function hidePhotoModal() {
-  const m = document.getElementById('photo-modal');
-  m.classList.add('closing');
-  setTimeout(() => { m.classList.remove('open', 'closing'); }, 150);
-}
+      function hidePhotoModal() {
+        const m = document.getElementById("photo-modal");
+        m.classList.add("closing");
+        setTimeout(() => {
+          m.classList.remove("open", "closing");
+        }, 150);
+      }
 
-function forceHidePhotoModal() { hidePhotoModal(); }
+      function forceHidePhotoModal() {
+        hidePhotoModal();
+      }
 
-function handlePhotoModalClose() {
-  const avatarView = document.getElementById('photo-avatar-view');
-  if (avatarView.style.display !== 'none') {
-    const changed = selectedAvatar !== pickerInitialEmoji || selectedAvatarBg !== pickerInitialBg;
-    if (changed && selectedAvatar) {
-      document.getElementById('avatar-confirm-prompt').style.display = '';
-      return;
-    }
-  }
-  hidePhotoModal();
-}
+      function handlePhotoModalClose() {
+        const avatarView = document.getElementById("photo-avatar-view");
+        if (avatarView.style.display !== "none") {
+          const changed =
+            selectedAvatar !== pickerInitialEmoji ||
+            selectedAvatarBg !== pickerInitialBg;
+          if (changed && selectedAvatar) {
+            document.getElementById("avatar-confirm-prompt").style.display = "";
+            return;
+          }
+        }
+        hidePhotoModal();
+      }
 
-function handlePhotoModalOverlay(e) {
-  if (e.target !== document.getElementById('photo-modal')) return;
-  handlePhotoModalClose();
-}
+      function handlePhotoModalOverlay(e) {
+        if (e.target !== document.getElementById("photo-modal")) return;
+        handlePhotoModalClose();
+      }
 
-function showAvatarPicker() {
-  document.getElementById('photo-main-view').style.display = 'none';
-  document.getElementById('photo-avatar-view').style.display = '';
-  document.getElementById('avatar-confirm-prompt').style.display = 'none';
-  if (profileAvatar) {
-    selectedAvatar   = profileAvatar.emoji;
-    selectedAvatarBg = profileAvatar.color;
-  } else {
-    selectedAvatar   = AVATARS[0];
-    selectedAvatarBg = AVATAR_COLORS[0];
-  }
-  pickerInitialEmoji = selectedAvatar;
-  pickerInitialBg    = selectedAvatarBg;
-  renderAvatarPicker();
-}
+      function showAvatarPicker() {
+        document.getElementById("photo-main-view").style.display = "none";
+        document.getElementById("photo-avatar-view").style.display = "";
+        document.getElementById("avatar-confirm-prompt").style.display = "none";
+        if (profileAvatar) {
+          selectedAvatar = profileAvatar.emoji;
+          selectedAvatarBg = profileAvatar.color;
+        } else {
+          selectedAvatar = AVATARS[0];
+          selectedAvatarBg = AVATAR_COLORS[0];
+        }
+        pickerInitialEmoji = selectedAvatar;
+        pickerInitialBg = selectedAvatarBg;
+        renderAvatarPicker();
+      }
 
-function renderAvatarPicker() {
-  document.getElementById('avatar-grid').innerHTML = AVATARS.map(emoji =>
-    `<div class="avatar-option${selectedAvatar===emoji?' selected':''}" onclick="pickAvatar('${emoji}')">${emoji}</div>`
-  ).join('');
-  document.getElementById('avatar-bg-row').innerHTML = AVATAR_COLORS.map(color =>
-    `<div class="avatar-bg-option${selectedAvatarBg===color?' selected':''}" style="background:${color};" onclick="pickAvatarBg('${color}')"></div>`
-  ).join('');
-  const prev = document.getElementById('avatar-preview');
-  prev.style.background = selectedAvatarBg || 'var(--surface)';
-  prev.textContent = selectedAvatar || '';
-}
+      function renderAvatarPicker() {
+        document.getElementById("avatar-grid").innerHTML = AVATARS.map(
+          (emoji) =>
+            `<div class="avatar-option${selectedAvatar === emoji ? " selected" : ""}" onclick="pickAvatar('${emoji}')">${emoji}</div>`,
+        ).join("");
+        document.getElementById("avatar-bg-row").innerHTML = AVATAR_COLORS.map(
+          (color) =>
+            `<div class="avatar-bg-option${selectedAvatarBg === color ? " selected" : ""}" style="background:${color};" onclick="pickAvatarBg('${color}')"></div>`,
+        ).join("");
+        const prev = document.getElementById("avatar-preview");
+        prev.style.background = selectedAvatarBg || "var(--surface)";
+        prev.textContent = selectedAvatar || "";
+      }
 
-function pickAvatar(emoji) {
-  selectedAvatar = emoji;
-  document.getElementById('avatar-confirm-prompt').style.display = 'none';
-  renderAvatarPicker();
-}
+      function pickAvatar(emoji) {
+        selectedAvatar = emoji;
+        document.getElementById("avatar-confirm-prompt").style.display = "none";
+        renderAvatarPicker();
+      }
 
-function pickAvatarBg(color) {
-  selectedAvatarBg = color;
-  document.getElementById('avatar-confirm-prompt').style.display = 'none';
-  renderAvatarPicker();
-}
+      function pickAvatarBg(color) {
+        selectedAvatarBg = color;
+        document.getElementById("avatar-confirm-prompt").style.display = "none";
+        renderAvatarPicker();
+      }
 
-function confirmAvatar() {
-  if (!selectedAvatar) return;
-  profileAvatar = { emoji: selectedAvatar, color: selectedAvatarBg || AVATAR_COLORS[0] };
-  profilePhoto  = null;
-  localStorage.setItem('profile-avatar', JSON.stringify(profileAvatar));
-  localStorage.removeItem('profile-picture');
-  renderProfilePic();
-  hidePhotoModal();
-}
+      function confirmAvatar() {
+        if (!selectedAvatar) return;
+        profileAvatar = {
+          emoji: selectedAvatar,
+          color: selectedAvatarBg || AVATAR_COLORS[0],
+        };
+        profilePhoto = null;
+        localStorage.setItem("profile-avatar", JSON.stringify(profileAvatar));
+        localStorage.removeItem("profile-picture");
+        renderProfilePic();
+        hidePhotoModal();
+      }
 
-function triggerFileInput() { document.getElementById('file-input').click(); }
+      function triggerFileInput() {
+        document.getElementById("file-input").click();
+      }
 
-function handleFileUpload(input) {
-  const file = input.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    profilePhoto  = e.target.result;
-    profileAvatar = null;
-    localStorage.setItem('profile-picture', profilePhoto);
-    localStorage.removeItem('profile-avatar');
-    renderProfilePic();
-    hidePhotoModal();
-    input.value = '';
-  };
-  reader.readAsDataURL(file);
-}
+      function handleFileUpload(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          profilePhoto = e.target.result;
+          profileAvatar = null;
+          localStorage.setItem("profile-picture", profilePhoto);
+          localStorage.removeItem("profile-avatar");
+          renderProfilePic();
+          hidePhotoModal();
+          input.value = "";
+        };
+        reader.readAsDataURL(file);
+      }
 
-// ── NAVIGATION ───────────────────────────────────────
-const SCREEN_ORDER = { home:0, calendar:1, settings:2, entry:3 };
-let transitioning = false;
+      // ── NAVIGATION ───────────────────────────────────────
+      const SCREEN_ORDER = { home: 0, calendar: 1, settings: 2, entry: 3 };
+      let transitioning = false;
 
-const NAV_SCREENS = new Set(['home','calendar','settings']);
+      const NAV_SCREENS = new Set(["home", "calendar", "settings"]);
 
-function syncNavActive(name) {
-  const navMap = {home:'nav-home', calendar:'nav-calendar', settings:'nav-settings'};
-  document.querySelectorAll('#global-nav .nav-btn').forEach(b=>b.classList.remove('active'));
-  if(navMap[name]) document.getElementById(navMap[name])?.classList.add('active');
-}
+      function syncNavActive(name) {
+        const navMap = {
+          home: "nav-home",
+          calendar: "nav-calendar",
+          settings: "nav-settings",
+        };
+        document
+          .querySelectorAll("#global-nav .nav-btn")
+          .forEach((b) => b.classList.remove("active"));
+        if (navMap[name])
+          document.getElementById(navMap[name])?.classList.add("active");
+      }
 
-function showScreen(name) {
-  if(name!=='entry') prevScreen=name;
+      function showScreen(name) {
+        if (name !== "entry") prevScreen = name;
 
-  const globalNav = document.getElementById('global-nav');
-  globalNav.style.display = name==='entry' ? 'none' : 'flex';
+        const globalNav = document.getElementById("global-nav");
+        globalNav.style.display = name === "entry" ? "none" : "flex";
 
-  const next    = document.getElementById('screen-'+name);
-  const current = document.querySelector('.screen:not(.hidden)');
+        const next = document.getElementById("screen-" + name);
+        const current = document.querySelector(".screen:not(.hidden)");
 
-  if(name==='home') initHome();
-  if(name==='calendar'){ renderCalendar(); document.getElementById('search-input').value=''; document.getElementById('cal-view').style.display=''; document.getElementById('search-view').style.display='none'; }
-  if(name==='settings') initSettings();
+        if (name === "home") initHome();
+        if (name === "calendar") {
+          renderCalendar();
+          document.getElementById("search-input").value = "";
+          document.getElementById("cal-view").style.display = "";
+          document.getElementById("search-view").style.display = "none";
+        }
+        if (name === "settings") initSettings();
 
-  if(!current || current===next) {
-    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-    next.classList.remove('hidden');
-    syncNavActive(name);
-    return;
-  }
-  if(transitioning) {
-    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-    next.classList.remove('hidden');
-    syncNavActive(name);
-    return;
-  }
+        if (!current || current === next) {
+          document
+            .querySelectorAll(".screen")
+            .forEach((s) => s.classList.add("hidden"));
+          next.classList.remove("hidden");
+          syncNavActive(name);
+          return;
+        }
+        if (transitioning) {
+          document
+            .querySelectorAll(".screen")
+            .forEach((s) => s.classList.add("hidden"));
+          next.classList.remove("hidden");
+          syncNavActive(name);
+          return;
+        }
 
-  const curName = current.id.replace('screen-','');
+        const curName = current.id.replace("screen-", "");
 
-  // Entry: clean slide right, no opacity, 300ms
-  if (name === 'entry' || curName === 'entry') {
-    syncNavActive(name);
-    transitioning = true;
-    if (name === 'entry') {
-      next.classList.remove('hidden');
-      next.classList.add('tx-entry-in');
-      setTimeout(() => { current.classList.add('hidden'); next.classList.remove('tx-entry-in'); transitioning=false; }, 320);
-    } else {
-      next.classList.remove('hidden');
-      current.classList.add('tx-entry-out');
-      setTimeout(() => { current.classList.add('hidden'); current.classList.remove('tx-entry-out'); transitioning=false; }, 320);
-    }
-    return;
-  }
+        // Entry: clean slide right, no opacity, 300ms
+        if (name === "entry" || curName === "entry") {
+          syncNavActive(name);
+          transitioning = true;
+          if (name === "entry") {
+            next.classList.remove("hidden");
+            next.classList.add("tx-entry-in");
+            setTimeout(() => {
+              current.classList.add("hidden");
+              next.classList.remove("tx-entry-in");
+              transitioning = false;
+            }, 320);
+          } else {
+            next.classList.remove("hidden");
+            current.classList.add("tx-entry-out");
+            setTimeout(() => {
+              current.classList.add("hidden");
+              current.classList.remove("tx-entry-out");
+              transitioning = false;
+            }, 320);
+          }
+          return;
+        }
 
-  // Nav-to-nav: sequential fade — out first, then in
-  if (NAV_SCREENS.has(name) && NAV_SCREENS.has(curName)) {
-    transitioning = true;
-    current.classList.add('tx-fade-out');
-    setTimeout(() => {
-      current.classList.add('hidden');
-      current.classList.remove('tx-fade-out');
-      next.classList.remove('hidden');
-      next.classList.add('tx-fade-in');
-      syncNavActive(name);
-      setTimeout(() => {
-        next.classList.remove('tx-fade-in');
-        transitioning = false;
-      }, 150);
-    }, 150);
-    return;
-  }
+        // Nav-to-nav: sequential fade — out first, then in
+        if (NAV_SCREENS.has(name) && NAV_SCREENS.has(curName)) {
+          transitioning = true;
+          current.classList.add("tx-fade-out");
+          setTimeout(() => {
+            current.classList.add("hidden");
+            current.classList.remove("tx-fade-out");
+            next.classList.remove("hidden");
+            next.classList.add("tx-fade-in");
+            syncNavActive(name);
+            setTimeout(() => {
+              next.classList.remove("tx-fade-in");
+              transitioning = false;
+            }, 150);
+          }, 150);
+          return;
+        }
 
-  // Fallback slide (non-nav screens)
-  syncNavActive(name);
-  const forward  = (SCREEN_ORDER[name]??3) >= (SCREEN_ORDER[curName]??3);
-  const inClass  = forward ? 'tx-in-right'  : 'tx-in-left';
-  const outClass = forward ? 'tx-out-left'  : 'tx-out-right';
-  transitioning = true;
-  next.classList.remove('hidden');
-  next.classList.add(inClass);
-  current.classList.add(outClass);
-  setTimeout(()=>{
-    current.classList.add('hidden');
-    current.classList.remove(outClass);
-    next.classList.remove(inClass);
-    transitioning = false;
-  }, 420);
-}
+        // Fallback slide (non-nav screens)
+        syncNavActive(name);
+        const forward =
+          (SCREEN_ORDER[name] ?? 3) >= (SCREEN_ORDER[curName] ?? 3);
+        const inClass = forward ? "tx-in-right" : "tx-in-left";
+        const outClass = forward ? "tx-out-left" : "tx-out-right";
+        transitioning = true;
+        next.classList.remove("hidden");
+        next.classList.add(inClass);
+        current.classList.add(outClass);
+        setTimeout(() => {
+          current.classList.add("hidden");
+          current.classList.remove(outClass);
+          next.classList.remove(inClass);
+          transitioning = false;
+        }, 420);
+      }
 
-// ── INIT ─────────────────────────────────────────────
-applyDark();
-applyFontSz();
-showScreen('home');
-</script>
-</body>
+      // ── INIT ─────────────────────────────────────────────
+      applyDark();
+      applyFontSz();
+      showScreen("home");
+    </script>
+  </body>
 </html>
